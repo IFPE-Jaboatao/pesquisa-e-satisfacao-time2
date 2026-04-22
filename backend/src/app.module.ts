@@ -4,7 +4,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { HealthModule } from './modules/health/health.module';
-
+import { SurveyModule } from './modules/survey/survey.module';
+import { ResponseModule } from './modules/response/response.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -27,6 +28,8 @@ import { HealthModule } from './modules/health/health.module';
     }),
 
     HealthModule,
+    SurveyModule,
+    ResponseModule,
   ],
   controllers: [AppController],
   providers: [AppService],
