@@ -2,41 +2,41 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Response } from '../../response/entities/response.entity';
+import { OneToMany } from 'typeorm';
 
 @Entity('surveys')
 export class Survey {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column({ length: 150 })
-  title: string;
+  title!: string;
 
   @Column({ type: 'text', nullable: true })
-  description?: string;
+  description?: string | null;
 
   @Column({ default: true })
-  isActive: boolean;
+  isActive!: boolean;
 
   @Column({ type: 'datetime', nullable: true })
-  startDate?: Date;
+  startDate?: Date | null;
 
   @Column({ type: 'datetime', nullable: true })
-  endDate?: Date;
+  endDate?: Date | null;
 
   @Column({ default: true })
-  isAnonymous: boolean;
+  isAnonymous!: boolean;
 
   @OneToMany(() => Response, (response) => response.survey)
-  responses: Response[];
+  responses!: Response[];
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt!: Date;
 }
