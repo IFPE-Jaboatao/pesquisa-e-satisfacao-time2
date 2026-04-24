@@ -6,10 +6,23 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiParam,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+
 import { ResponseService } from './response.service';
 import { CreateResponseDto } from './dto/create-response.dto';
+
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { UserRole } from '../auth/enums/user-role.enum';
 
 @ApiTags('Responses')
 @Controller('responses')
@@ -17,6 +30,9 @@ export class ResponseController {
   constructor(private readonly responseService: ResponseService) {}
 
   @Post()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.USUARIO)
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Enviar uma resposta da pesquisa' })
   @ApiResponse({ status: 201, description: 'Resposta registrada com sucesso' })
   @ApiResponse({ status: 400, description: 'Dados inválidos' })
@@ -26,6 +42,9 @@ export class ResponseController {
   }
 
   @Get()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ADMINISTRADOR, UserRole.COORDENACAO, UserRole.AUDITORIA)
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Listar todas as respostas' })
   @ApiResponse({ status: 200, description: 'Lista de respostas retornada' })
   findAll() {
@@ -33,6 +52,9 @@ export class ResponseController {
   }
 
   @Get('survey/:surveyId')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ADMINISTRADOR, UserRole.COORDENACAO, UserRole.AUDITORIA)
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Listar respostas por pesquisa' })
   @ApiParam({ name: 'surveyId', example: 1 })
   @ApiResponse({ status: 200, description: 'Respostas da pesquisa retornadas' })
@@ -41,6 +63,9 @@ export class ResponseController {
   }
 
   @Get(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ADMINISTRADOR, UserRole.COORDENACAO, UserRole.AUDITORIA)
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Buscar resposta por ID' })
   @ApiParam({ name: 'id', example: 1 })
   @ApiResponse({ status: 200, description: 'Resposta encontrada' })
@@ -50,6 +75,9 @@ export class ResponseController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ADMINISTRADOR)
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Remover resposta por ID' })
   @ApiParam({ name: 'id', example: 1 })
   @ApiResponse({ status: 200, description: 'Resposta removida com sucesso' })

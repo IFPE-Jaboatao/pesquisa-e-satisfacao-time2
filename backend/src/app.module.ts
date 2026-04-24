@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { HealthModule } from './modules/health/health.module';
 import { SurveyModule } from './modules/survey/survey.module';
 import { ResponseModule } from './modules/response/response.module';
+import { AuthModule } from './modules/auth/auth.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -30,6 +31,7 @@ import { ResponseModule } from './modules/response/response.module';
     HealthModule,
     SurveyModule,
     ResponseModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
