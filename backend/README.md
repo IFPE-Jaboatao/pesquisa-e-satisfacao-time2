@@ -75,8 +75,11 @@ npm run start:dev
 
 A API estará disponível em:
 
-```bash
+```API:
 http://localhost:3000/api
+```
+```Swagger:
+http://localhost:3000/api/docs
 ```
 
 ---
@@ -222,9 +225,10 @@ Esse fluxo acompanha a lógica principal da jornada de resposta da pesquisa, na 
 
 ## Testes
 
-Os testes iniciais foram realizados com:
+Os testes foram realizados utilizando:
 
 * **Postman**
+* **Swagger**
 
 Também existem arquivos de teste automático gerados pelo NestJS no módulo `health` e nos arquivos padrão da aplicação.
 
@@ -268,6 +272,76 @@ Cada funcionalidade é criada em uma branch separada:
 
 ---
 
+## Autenticação e Segurança
+
+A aplicação agora conta com autenticação utilizando **JWT (JSON Web Token)** e controle de acesso por perfil (**RBAC**).
+
+### Funcionalidades implementadas:
+
+* cadastro de usuários
+* login com geração de token JWT
+* criptografia de senha com bcrypt
+* proteção de rotas com `JwtAuthGuard`
+* controle de acesso com `RolesGuard`
+
+### Perfis disponíveis:
+
+* ADMINISTRADOR
+* COORDENACAO
+* AUDITORIA
+* USUARIO
+
+### Exemplo de login:
+
+```http
+POST /api/auth/login
+
+{
+  "username": "admin",
+  "password": "123456"
+}
+
+Retorno
+
+{
+  "access_token": "TOKEN_JWT"
+}
+
+### Uso do Token
+
+Para acessar rotas protegidas:
+
+Acesse o Swagger
+Clique em Authorize
+Insira:
+
+Bearer SEU_TOKEN
+
+---
+
+## Documentação com Swagger
+
+A API possui documentação interativa disponível em:
+
+http://localhost:3000/api/docs
+
+Com o Swagger é possível:
+
+testar todas as rotas
+visualizar parâmetros
+realizar autenticação
+validar respostas da API
+
+---
+
+Protótipo (Figma)
+
+O layout do sistema foi desenvolvido no Figma:
+
+🔗 https://www.figma.com/design/0jw5ZMS1jzTk8XWhGgaEUT/Pesquisa-de-Satisfa%C3%A7%C3%A3o?node-id=0-1&t=OrVetilZStD3fj1H-1
+
+---
+
 ## Etapas do Projeto
 
 ### Etapa 1 — Backend Base
@@ -278,19 +352,21 @@ Concluído:
 * configuração do MySQL
 * integração com TypeORM
 * configuração de variáveis de ambiente
-* ajuste do `app.module.ts`
-* ajuste do `main.ts`
 * criação do módulo `health`
 
-### Etapa 2 — Fluxo Principal da Pesquisa
-
-Em andamento/concluído parcialmente:
+### Etapa 2 — Fluxo Principal da Pesquisa 
 
 * módulo `survey`
 * módulo `response`
 * entidades
 * DTOs
 * endpoints principais
+
+### Etapa 3 — Segurança e Documentação 
+autenticação com JWT
+controle por perfil (RBAC)
+Swagger configurado
+proteção de rotas
 
 ### Próximas Etapas
 
@@ -299,10 +375,9 @@ Planejado:
 * módulo `question`
 * módulo `option`
 * regras de negócio mais completas
-* autenticação e autorização
-* documentação com Swagger
 * relatórios
 * integração com frontend React + Flowbite
+* deploy da aplicação
 
 ---
 
@@ -312,8 +387,6 @@ Este README documenta o estágio atual do backend.
 
 Ainda serão adicionados futuramente:
 
-* Swagger
-* autenticação
 * collection de testes exportada
 * regras de negócio completas
 

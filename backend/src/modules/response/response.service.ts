@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { MoreThanOrEqual, LessThanOrEqual, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Response } from './entities/response.entity';
 import { ResponseItem } from './entities/response-item.entity';
 import { CreateResponseDto } from './dto/create-response.dto';
