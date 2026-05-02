@@ -1,5 +1,6 @@
 import {
   IsArray,
+  ArrayMinSize,
   IsBoolean,
   IsInt,
   IsOptional,
@@ -85,6 +86,7 @@ export class CreateResponseDto {
     description: 'Lista de respostas individuais',
   })
   @IsArray()
+  @ArrayMinSize(1, { message: 'A resposta deve conter pelo menos um item.' })
   @ValidateNested({ each: true })
   @Type(() => CreateResponseItemDto)
   items: CreateResponseItemDto[];

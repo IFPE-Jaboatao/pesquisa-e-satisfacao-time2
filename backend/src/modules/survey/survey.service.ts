@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IsNull, LessThanOrEqual, MoreThanOrEqual, Repository } from 'typeorm';
 import { Survey } from './entities/survey.entity';
@@ -12,15 +16,29 @@ export class SurveyService {
     private readonly surveyRepository: Repository<Survey>,
   ) {}
 
+  private validateDates(startDate?: Date | null, endDate?: Date | null): void {
+    if (startDate && endDate && startDate > endDate) {
+      throw new BadRequestException(
+        'A data de início não pode ser maior que a data de término.',
+      );
+    }
+  }
+
   async create(createSurveyDto: CreateSurveyDto): Promise<Survey> {
+    const startDate = createSurveyDto.startDate
+      ? new Date(createSurveyDto.startDate)
+      : null;
+
+    const endDate = createSurveyDto.endDate
+      ? new Date(createSurveyDto.endDate)
+      : null;
+
+    this.validateDates(startDate, endDate);
+
     const survey = this.surveyRepository.create({
       ...createSurveyDto,
-      startDate: createSurveyDto.startDate
-        ? new Date(createSurveyDto.startDate)
-        : null,
-      endDate: createSurveyDto.endDate
-        ? new Date(createSurveyDto.endDate)
-        : null,
+      startDate,
+      endDate,
     });
 
     return this.surveyRepository.save(survey);
@@ -67,20 +85,26 @@ export class SurveyService {
   async update(id: number, updateSurveyDto: UpdateSurveyDto): Promise<Survey> {
     const survey = await this.findOne(id);
 
+    const startDate =
+      updateSurveyDto.startDate !== undefined
+        ? updateSurveyDto.startDate
+          ? new Date(updateSurveyDto.startDate)
+          : null
+        : survey.startDate;
+
+    const endDate =
+      updateSurveyDto.endDate !== undefined
+        ? updateSurveyDto.endDate
+          ? new Date(updateSurveyDto.endDate)
+          : null
+        : survey.endDate;
+
+    this.validateDates(startDate, endDate);
+
     Object.assign(survey, {
       ...updateSurveyDto,
-      startDate:
-        updateSurveyDto.startDate !== undefined
-          ? updateSurveyDto.startDate
-            ? new Date(updateSurveyDto.startDate)
-            : null
-          : survey.startDate,
-      endDate:
-        updateSurveyDto.endDate !== undefined
-          ? updateSurveyDto.endDate
-            ? new Date(updateSurveyDto.endDate)
-            : null
-          : survey.endDate,
+      startDate,
+      endDate,
     });
 
     return this.surveyRepository.save(survey);

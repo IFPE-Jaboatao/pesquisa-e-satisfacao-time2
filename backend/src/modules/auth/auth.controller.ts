@@ -8,10 +8,10 @@ import {
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
-import { RolesGuard } from './guards/roles.guard';
-import { Roles } from './decorators/roles.decorator';
-import { UserRole } from './enums/user-role.enum';
+import { JwtAuthGuard } from './jwt-auth.guard';
+import { RolesGuard } from './roles.guard';
+import { Roles } from './roles.decorator';
+import { UserRole } from './user-role.enum';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -28,7 +28,7 @@ export class AuthController {
     );
 
     if (!user) {
-      return { message: 'Invalid credentials' };
+      return { message: 'Credenciais inválidas.' };
     }
 
     return this.authService.login(user);

@@ -14,23 +14,23 @@ O sistema tem como foco o gerenciamento de pesquisas de satisfação, permitindo
 
 O objetivo deste backend é:
 
-* gerenciar pesquisas de satisfação
-* disponibilizar pesquisas ativas
-* registrar respostas enviadas
-* armazenar dados em banco relacional
-* preparar a base para futuras regras de negócio, autenticação e relatórios
+- gerenciar pesquisas de satisfação
+- disponibilizar pesquisas ativas
+- registrar respostas enviadas
+- armazenar dados em banco relacional
+- preparar a base para futuras regras de negócio, autenticação e relatórios
 
 ---
 
 ## Tecnologias Utilizadas
 
-* **Node.js**
-* **TypeScript**
-* **NestJS**
-* **TypeORM**
-* **MySQL**
-* **class-validator**
-* **class-transformer**
+- **Node.js**
+- **TypeScript**
+- **NestJS**
+- **TypeORM**
+- **MySQL**
+- **class-validator**
+- **class-transformer**
 
 ---
 
@@ -38,10 +38,10 @@ O objetivo deste backend é:
 
 O projeto segue a arquitetura padrão do NestJS:
 
-* **Controller** → recebe as requisições HTTP
-* **Service** → contém a lógica de negócio
-* **Entity** → representa as tabelas do banco
-* **Module** → organiza os componentes de cada funcionalidade
+- **Controller** → recebe as requisições HTTP
+- **Service** → contém a lógica de negócio
+- **Entity** → representa as tabelas do banco
+- **Module** → organiza os componentes de cada funcionalidade
 
 ---
 
@@ -53,6 +53,11 @@ Dentro da pasta `backend`, execute:
 
 ```bash
 npm install
+```
+
+```
+npm install class-validator class-transformer
+npm install @nestjs/swagger
 ```
 
 ### 2. Configurar variáveis de ambiente
@@ -78,6 +83,7 @@ A API estará disponível em:
 ```API:
 http://localhost:3000/api
 ```
+
 ```Swagger:
 http://localhost:3000/api/docs
 ```
@@ -92,12 +98,12 @@ Responsável por verificar se a API está online.
 
 **Objetivo:**
 
-* validar se o backend está rodando corretamente
-* facilitar testes iniciais da aplicação
+- validar se o backend está rodando corretamente
+- facilitar testes iniciais da aplicação
 
 **Rota principal:**
 
-* `GET /api/health`
+- `GET /api/health`
 
 ---
 
@@ -107,23 +113,22 @@ Responsável pelo gerenciamento das pesquisas.
 
 **Funcionalidades atuais:**
 
-* criar pesquisa
-* listar pesquisas
-* buscar pesquisa por ID
-* atualizar pesquisa
-* remover pesquisa
-* listar pesquisas ativas
+- criar pesquisa
+- listar pesquisas
+- buscar pesquisa por ID
+- atualizar pesquisa
+- remover pesquisa
+- listar pesquisas ativas
 
 **Arquivos principais:**
 
-* `survey.module.ts`
-* `survey.controller.ts`
-* `survey.service.ts`
-* `survey.entity.ts`
-* DTOs:
-
-  * `create-survey.dto.ts`
-  * `update-survey.dto.ts`
+- `survey.module.ts`
+- `survey.controller.ts`
+- `survey.service.ts`
+- `survey.entity.ts`
+- DTOs:
+  - `create-survey.dto.ts`
+  - `update-survey.dto.ts`
 
 ---
 
@@ -133,23 +138,22 @@ Responsável pelo envio e armazenamento das respostas da pesquisa.
 
 **Funcionalidades atuais:**
 
-* registrar resposta
-* listar respostas
-* buscar resposta por ID
-* listar respostas por pesquisa
-* remover resposta
+- registrar resposta
+- listar respostas
+- buscar resposta por ID
+- listar respostas por pesquisa
+- remover resposta
 
 **Arquivos principais:**
 
-* `response.module.ts`
-* `response.controller.ts`
-* `response.service.ts`
-* `response.entity.ts`
-* `response-item.entity.ts`
-* DTOs:
-
-  * `create-response.dto.ts`
-  * `create-response-item.dto.ts`
+- `response.module.ts`
+- `response.controller.ts`
+- `response.service.ts`
+- `response.entity.ts`
+- `response-item.entity.ts`
+- DTOs:
+  - `create-response.dto.ts`
+  - `create-response-item.dto.ts`
 
 ---
 
@@ -163,15 +167,15 @@ Armazena as pesquisas cadastradas.
 
 **Campos principais:**
 
-* `id`
-* `title`
-* `description`
-* `isActive`
-* `startDate`
-* `endDate`
-* `isAnonymous`
-* `createdAt`
-* `updatedAt`
+- `id`
+- `title`
+- `description`
+- `isActive`
+- `startDate`
+- `endDate`
+- `isAnonymous`
+- `createdAt`
+- `updatedAt`
 
 ---
 
@@ -181,16 +185,16 @@ Armazena a submissão geral da pesquisa.
 
 **Campos principais:**
 
-* `id`
-* `surveyId`
-* `course`
-* `period`
-* `shift`
-* `semester`
-* `campus`
-* `finalComment`
-* `wouldRecommend`
-* `createdAt`
+- `id`
+- `surveyId`
+- `course`
+- `period`
+- `shift`
+- `semester`
+- `campus`
+- `finalComment`
+- `wouldRecommend`
+- `createdAt`
 
 ---
 
@@ -200,12 +204,12 @@ Armazena cada resposta individual vinculada a uma submissão.
 
 **Campos principais:**
 
-* `id`
-* `responseId`
-* `questionId`
-* `selectedValue`
-* `textAnswer`
-* `createdAt`
+- `id`
+- `responseId`
+- `questionId`
+- `selectedValue`
+- `textAnswer`
+- `createdAt`
 
 ---
 
@@ -227,8 +231,8 @@ Esse fluxo acompanha a lógica principal da jornada de resposta da pesquisa, na 
 
 Os testes foram realizados utilizando:
 
-* **Postman**
-* **Swagger**
+- **Postman**
+- **Swagger**
 
 Também existem arquivos de teste automático gerados pelo NestJS no módulo `health` e nos arquivos padrão da aplicação.
 
@@ -236,24 +240,24 @@ Também existem arquivos de teste automático gerados pelo NestJS no módulo `he
 
 #### Health
 
-* `GET /api/health`
+- `GET /api/health`
 
 #### Survey
 
-* `POST /api/surveys`
-* `GET /api/surveys`
-* `GET /api/surveys/:id`
-* `GET /api/surveys/active`
-* `PATCH /api/surveys/:id`
-* `DELETE /api/surveys/:id`
+- `POST /api/surveys`
+- `GET /api/surveys`
+- `GET /api/surveys/:id`
+- `GET /api/surveys/active`
+- `PATCH /api/surveys/:id`
+- `DELETE /api/surveys/:id`
 
 #### Response
 
-* `POST /api/responses`
-* `GET /api/responses`
-* `GET /api/responses/:id`
-* `GET /api/responses/survey/:surveyId`
-* `DELETE /api/responses/:id`
+- `POST /api/responses`
+- `GET /api/responses`
+- `GET /api/responses/:id`
+- `GET /api/responses/survey/:surveyId`
+- `DELETE /api/responses/:id`
 
 ---
 
@@ -263,8 +267,8 @@ O projeto segue um fluxo com branches para facilitar o trabalho em equipe.
 
 ### Branches principais
 
-* `main` → versão estável
-* `develop` → integração do time
+- `main` → versão estável
+- `develop` → integração do time
 
 ### Branches de desenvolvimento
 
@@ -278,18 +282,18 @@ A aplicação agora conta com autenticação utilizando **JWT (JSON Web Token)**
 
 ### Funcionalidades implementadas:
 
-* cadastro de usuários
-* login com geração de token JWT
-* criptografia de senha com bcrypt
-* proteção de rotas com `JwtAuthGuard`
-* controle de acesso com `RolesGuard`
+- cadastro de usuários
+- login com geração de token JWT
+- criptografia de senha com bcrypt
+- proteção de rotas com `JwtAuthGuard`
+- controle de acesso com `RolesGuard`
 
 ### Perfis disponíveis:
 
-* ADMINISTRADOR
-* COORDENACAO
-* AUDITORIA
-* USUARIO
+- ADMINISTRADOR
+- COORDENACAO
+- AUDITORIA
+- USUARIO
 
 ### Exemplo de login:
 
@@ -354,7 +358,7 @@ Concluído:
 * configuração de variáveis de ambiente
 * criação do módulo `health`
 
-### Etapa 2 — Fluxo Principal da Pesquisa 
+### Etapa 2 — Fluxo Principal da Pesquisa
 
 * módulo `survey`
 * módulo `response`
@@ -362,7 +366,7 @@ Concluído:
 * DTOs
 * endpoints principais
 
-### Etapa 3 — Segurança e Documentação 
+### Etapa 3 — Segurança e Documentação
 autenticação com JWT
 controle por perfil (RBAC)
 Swagger configurado
@@ -402,3 +406,4 @@ Projeto desenvolvido em equipe para disciplina de Desenvolvimento Web.
 
 Projeto acadêmico, sem fins comerciais.
 
+```
