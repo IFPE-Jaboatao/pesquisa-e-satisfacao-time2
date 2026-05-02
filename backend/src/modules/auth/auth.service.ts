@@ -3,9 +3,9 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
-import { User } from './entities/user.entity';
+import { User } from './user.entity';
 import { RegisterDto } from './dto/register.dto';
-import { UserRole } from './enums/user-role.enum';
+import { UserRole } from './user-role.enum';
 
 type AuthUser = {
   id: number;
