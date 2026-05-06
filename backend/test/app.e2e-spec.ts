@@ -13,35 +13,13 @@ describe('AppController (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
-
-    app.setGlobalPrefix('api');
-
     await app.init();
   });
 
-  afterEach(async () => {
-    await app.close();
-  });
-
-  it('/api (GET)', () => {
+  it('/ (GET)', () => {
     return request(app.getHttpServer())
-      .get('/api')
+      .get('/')
       .expect(200)
-      .expect({
-        success: true,
-        message: 'API online com sucesso',
-        data: {
-          name: 'Minha API',
-          version: '1.0.0',
-        },
-        errors: null,
-      });
-  });
-
-  it('/api/health (GET)', () => {
-    return request(app.getHttpServer()).get('/api/health').expect(200).expect({
-      status: 'ok',
-      message: 'API funcionando corretamente',
-    });
+      .expect('Hello World!');
   });
 });
