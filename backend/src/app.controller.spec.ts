@@ -15,16 +15,8 @@ describe('AppController', () => {
   });
 
   describe('root', () => {
-    it('should return API status object', () => {
-      expect(appController.getHello()).toEqual({
-        success: true,
-        message: 'API online com sucesso',
-        data: {
-          name: 'Minha API',
-          version: '1.0.0',
-        },
-        errors: null,
-      });
+    it('should return "Hello World!"', () => {
+      expect(appController.getHello()).toBe('Hello World!');
     });
   });
 });
