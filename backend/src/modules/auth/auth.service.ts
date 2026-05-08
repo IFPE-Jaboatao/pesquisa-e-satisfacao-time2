@@ -1,10 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
+
 import { User } from './user.entity';
 import { RegisterDto } from './dto/register.dto';
+import { CreateUserByAdminDto } from './dto/create-user-by-admin.dto';
 import { UserRole } from './user-role.enum';
 
 type AuthUser = {
@@ -58,13 +60,60 @@ export class AuthService {
   }
 
   async register(registerDto: RegisterDto): Promise<AuthUser> {
+    const existingUser = await this.userRepository.findOne({
+      where: [{ username: registerDto.username }, { email: registerDto.email }],
+    });
+
+    if (existingUser) {
+      throw new BadRequestException('Usuário ou e-mail já cadastrado.');
+    }
+
     const hashedPassword = await bcrypt.hash(registerDto.password, 10);
 
     const user = this.userRepository.create({
       username: registerDto.username,
       email: registerDto.email,
       password: hashedPassword,
-      role: registerDto.role,
+      role: UserRole.USUARIO,
+    });
+
+    const savedUser = await this.userRepository.save(user);
+
+    return {
+      id: savedUser.id,
+      username: savedUser.username,
+      email: savedUser.email,
+      role: savedUser.role,
+    };
+  }
+
+  async createUserByAdmin(
+    createUserDto: CreateUserByAdminDto,
+  ): Promise<AuthUser> {
+    if (createUserDto.role === UserRole.USUARIO) {
+      throw new BadRequestException(
+        'Use o cadastro público para criar usuários comuns.',
+      );
+    }
+
+    const existingUser = await this.userRepository.findOne({
+      where: [
+        { username: createUserDto.username },
+        { email: createUserDto.email },
+      ],
+    });
+
+    if (existingUser) {
+      throw new BadRequestException('Usuário ou e-mail já cadastrado.');
+    }
+
+    const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
+
+    const user = this.userRepository.create({
+      username: createUserDto.username,
+      email: createUserDto.email,
+      password: hashedPassword,
+      role: createUserDto.role,
     });
 
     const savedUser = await this.userRepository.save(user);

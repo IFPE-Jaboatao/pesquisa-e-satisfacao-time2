@@ -6,9 +6,8 @@ import {
 
 @ValidatorConstraint({ name: 'OnlyOneCorrect', async: false })
 export class OnlyOneCorrect implements ValidatorConstraintInterface {
-
   validate(options: any[], args: ValidationArguments) {
-    const correctCount = options.filter(opt => opt.isCorrect === true).length;
+    const correctCount = options.filter((opt) => opt.isCorrect === true).length;
     return correctCount === 1;
   }
 

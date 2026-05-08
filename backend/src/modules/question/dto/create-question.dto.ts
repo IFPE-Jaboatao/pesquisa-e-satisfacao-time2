@@ -13,7 +13,6 @@ import { OnlyOneCorrect } from '../validators/only-one-correct.validator';
 import { NoDuplicateOptions } from '../validators/no-duplicate-options.validator';
 
 export class CreateQuestionDto {
-
   @IsString()
   @IsNotEmpty()
   title: string;

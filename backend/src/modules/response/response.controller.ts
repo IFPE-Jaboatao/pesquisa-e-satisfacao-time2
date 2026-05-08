@@ -6,6 +6,7 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -24,6 +25,14 @@ import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { UserRole } from '../auth/user-role.enum';
 
+type AuthenticatedRequest = {
+  user: {
+    userId: number;
+    username: string;
+    role: UserRole;
+  };
+};
+
 @ApiTags('Responses')
 @Controller('responses')
 export class ResponseController {
@@ -37,8 +46,11 @@ export class ResponseController {
   @ApiResponse({ status: 201, description: 'Resposta registrada com sucesso' })
   @ApiResponse({ status: 400, description: 'Dados inválidos' })
   @ApiResponse({ status: 404, description: 'Pesquisa não encontrada' })
-  create(@Body() createResponseDto: CreateResponseDto) {
-    return this.responseService.create(createResponseDto);
+  create(
+    @Body() createResponseDto: CreateResponseDto,
+    @Req() req: AuthenticatedRequest,
+  ) {
+    return this.responseService.create(createResponseDto, req.user.userId);
   }
 
   @Get()
