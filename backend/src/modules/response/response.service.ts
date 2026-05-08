@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+
 import { Response } from './entities/response.entity';
 import { ResponseItem } from './entities/response-item.entity';
 import { CreateResponseDto } from './dto/create-response.dto';
@@ -23,7 +24,10 @@ export class ResponseService {
     private readonly surveyRepository: Repository<Survey>,
   ) {}
 
-  async create(createResponseDto: CreateResponseDto): Promise<Response> {
+  async create(
+    createResponseDto: CreateResponseDto,
+    userId: number,
+  ): Promise<Response> {
     const survey = await this.surveyRepository.findOne({
       where: { id: createResponseDto.surveyId },
     });
@@ -40,27 +44,47 @@ export class ResponseService {
 
     const now = new Date();
 
-    if (survey.startDate && survey.startDate > now) {
+    const startDate = survey.startDate ? new Date(survey.startDate) : null;
+
+    const endDate = survey.endDate ? new Date(survey.endDate) : null;
+
+    if (startDate && now < startDate) {
       throw new BadRequestException(
         'A pesquisa ainda não está disponível para resposta.',
       );
     }
 
-    if (survey.endDate && survey.endDate < now) {
+    if (endDate && now > endDate) {
       throw new BadRequestException(
         'O período de resposta desta pesquisa já foi encerrado.',
       );
     }
 
+    // BLOQUEIO DE RESPOSTA DUPLICADA
+    const existingResponse = await this.responseRepository.findOne({
+      where: {
+        surveyId: createResponseDto.surveyId,
+        userId,
+      },
+    });
+
+    if (existingResponse) {
+      throw new BadRequestException('Você já respondeu esta pesquisa.');
+    }
+
     const response = this.responseRepository.create({
       surveyId: createResponseDto.surveyId,
+      userId,
+
       course: createResponseDto.course,
       period: createResponseDto.period,
       shift: createResponseDto.shift,
       semester: createResponseDto.semester,
       campus: createResponseDto.campus,
+
       finalComment: createResponseDto.finalComment,
       wouldRecommend: createResponseDto.wouldRecommend,
+
       items: createResponseDto.items.map((item) =>
         this.responseItemRepository.create({
           questionId: item.questionId,

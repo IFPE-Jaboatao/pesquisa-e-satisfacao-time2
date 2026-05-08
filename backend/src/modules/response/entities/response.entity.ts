@@ -5,22 +5,27 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  Unique,
 } from 'typeorm';
 import { Survey } from '../../survey/entities/survey.entity';
 import { ResponseItem } from './response-item.entity';
 
 @Entity('responses')
+@Unique(['surveyId', 'userId'])
 export class Response {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column()
-  surveyId: number;
+  surveyId!: number;
+
+  @Column()
+  userId!: number;
 
   @ManyToOne(() => Survey, (survey) => survey.responses, {
     onDelete: 'CASCADE',
   })
-  survey: Survey;
+  survey!: Survey;
 
   @Column({ length: 100, nullable: true })
   course?: string;
@@ -46,8 +51,8 @@ export class Response {
   @OneToMany(() => ResponseItem, (item) => item.response, {
     cascade: true,
   })
-  items: ResponseItem[];
+  items!: ResponseItem[];
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
 }

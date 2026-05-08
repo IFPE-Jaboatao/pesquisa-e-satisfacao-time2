@@ -10,8 +10,8 @@ import { SurveyModule } from './modules/survey/survey.module';
 import { ResponseModule } from './modules/response/response.module';
 import { AuthModule } from './modules/auth/auth.module';
 
-import { QuestionModule } from './question/question.module';
-import { OptionModule } from './option/option.module';
+import { QuestionModule } from './modules/question/question.module';
+import { OptionModule } from './modules/option/option.module';
 
 @Module({
   imports: [

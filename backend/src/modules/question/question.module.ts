@@ -9,10 +9,6 @@ import { NoDuplicateOptions } from './validators/no-duplicate-options.validator'
 @Module({
   imports: [TypeOrmModule.forFeature([Question])],
   controllers: [QuestionController],
-  providers: [
-    QuestionService,
-    OnlyOneCorrect,
-    NoDuplicateOptions
-  ],
+  providers: [QuestionService, OnlyOneCorrect, NoDuplicateOptions],
 })
 export class QuestionModule {}
