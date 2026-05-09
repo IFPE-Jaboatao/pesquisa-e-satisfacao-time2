@@ -1,2 +1,5 @@
 frontend/%LOCALAPPDATA%/
 %LOCALAPPDATA%/
+
+# Secrets do docker-compose na raiz (use .env.production.example como modelo)
+.env
