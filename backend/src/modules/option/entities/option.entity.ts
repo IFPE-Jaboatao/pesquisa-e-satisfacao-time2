@@ -1,6 +1,6 @@
 // option/entities/option.entity.ts
 
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Question } from '../../question/entities/question.entity';
 
 @Entity('options')
@@ -8,12 +8,20 @@ export class Option {
   @PrimaryGeneratedColumn()
   id!: number;
 
+  @Column({ length: 100 })
+  label!: string;
+
+  @Column({ length: 100, nullable: true })
+  value?: string;
+
+  @Column({ nullable: true })
+  score?: number;
+
   @Column()
-  text!: string;
+  questionId!: number;
 
-  @Column({ default: false })
-  isCorrect!: boolean;
-
-  @ManyToOne(() => Question, (question) => question.options)
+  @ManyToOne(() => Question, (question) => question.options, {
+    onDelete: 'CASCADE',
+  })
   question!: Question;
 }

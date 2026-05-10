@@ -24,11 +24,8 @@ export class ResponseService {
     private readonly surveyRepository: Repository<Survey>,
   ) {}
 
-  async create(
-    createResponseDto: CreateResponseDto,
-    userId: number,
-  ): Promise<Response> {
-    const survey = await this.surveyRepository.findOne({
+  async create(createResponseDto: CreateResponseDto): Promise<Response> {
+    const survey: Survey | null = await this.surveyRepository.findOne({
       where: { id: createResponseDto.surveyId },
     });
 
@@ -64,7 +61,7 @@ export class ResponseService {
     const existingResponse = await this.responseRepository.findOne({
       where: {
         surveyId: createResponseDto.surveyId,
-        userId,
+        respondentToken: createResponseDto.respondentToken,
       },
     });
 
@@ -74,14 +71,11 @@ export class ResponseService {
 
     const response = this.responseRepository.create({
       surveyId: createResponseDto.surveyId,
-      userId,
-
+      respondentToken: createResponseDto.respondentToken,
       course: createResponseDto.course,
       period: createResponseDto.period,
       shift: createResponseDto.shift,
-      semester: createResponseDto.semester,
       campus: createResponseDto.campus,
-
       finalComment: createResponseDto.finalComment,
       wouldRecommend: createResponseDto.wouldRecommend,
 

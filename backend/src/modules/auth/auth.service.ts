@@ -5,7 +5,6 @@ import { Repository } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 
 import { User } from './user.entity';
-import { RegisterDto } from './dto/register.dto';
 import { CreateUserByAdminDto } from './dto/create-user-by-admin.dto';
 import { UserRole } from './user-role.enum';
 
@@ -30,21 +29,27 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async validateUser(username: string, pass: string): Promise<AuthUser | null> {
+  async validateUser(email: string, pass: string): Promise<AuthUser | null> {
     const user = await this.userRepository.findOne({
-      where: { username },
+      where: { email },
     });
 
-    if (user && (await bcrypt.compare(pass, user.password))) {
-      return {
-        id: user.id,
-        username: user.username,
-        email: user.email,
-        role: user.role,
-      };
+    if (!user) {
+      return null;
     }
 
-    return null;
+    const passwordMatches = await bcrypt.compare(pass, user.password);
+
+    if (!passwordMatches) {
+      return null;
+    }
+
+    return {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      role: user.role,
+    };
   }
 
   login(user: AuthUser): { access_token: string } {
@@ -59,43 +64,9 @@ export class AuthService {
     };
   }
 
-  async register(registerDto: RegisterDto): Promise<AuthUser> {
-    const existingUser = await this.userRepository.findOne({
-      where: [{ username: registerDto.username }, { email: registerDto.email }],
-    });
-
-    if (existingUser) {
-      throw new BadRequestException('Usuário ou e-mail já cadastrado.');
-    }
-
-    const hashedPassword = await bcrypt.hash(registerDto.password, 10);
-
-    const user = this.userRepository.create({
-      username: registerDto.username,
-      email: registerDto.email,
-      password: hashedPassword,
-      role: UserRole.USUARIO,
-    });
-
-    const savedUser = await this.userRepository.save(user);
-
-    return {
-      id: savedUser.id,
-      username: savedUser.username,
-      email: savedUser.email,
-      role: savedUser.role,
-    };
-  }
-
   async createUserByAdmin(
     createUserDto: CreateUserByAdminDto,
   ): Promise<AuthUser> {
-    if (createUserDto.role === UserRole.USUARIO) {
-      throw new BadRequestException(
-        'Use o cadastro público para criar usuários comuns.',
-      );
-    }
-
     const existingUser = await this.userRepository.findOne({
       where: [
         { username: createUserDto.username },
@@ -113,7 +84,7 @@ export class AuthService {
       username: createUserDto.username,
       email: createUserDto.email,
       password: hashedPassword,
-      role: createUserDto.role,
+      role: UserRole.ADMINISTRADOR,
     });
 
     const savedUser = await this.userRepository.save(user);
@@ -131,11 +102,13 @@ export class AuthService {
       order: { id: 'ASC' },
     });
 
-    return users.map((user) => ({
-      id: user.id,
-      username: user.username,
-      email: user.email,
-      role: user.role,
-    }));
+    return users.map(
+      (user): AuthUser => ({
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        role: user.role,
+      }),
+    );
   }
 }

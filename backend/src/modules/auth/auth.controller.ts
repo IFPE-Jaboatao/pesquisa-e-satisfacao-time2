@@ -14,15 +14,21 @@ import {
 } from '@nestjs/swagger';
 
 import { AuthService } from './auth.service';
-
-import { LoginDto } from './dto/login.dto';
-import { RegisterDto } from './dto/register.dto';
 import { CreateUserByAdminDto } from './dto/create-user-by-admin.dto';
-
 import { JwtAuthGuard } from './jwt-auth.guard';
-import { RolesGuard } from './roles.guard';
-import { Roles } from './roles.decorator';
 import { UserRole } from './user-role.enum';
+import { LoginDto } from './dto/login.dto';
+
+type AuthUser = {
+  id: number;
+  username: string;
+  email: string;
+  role: UserRole;
+};
+
+type LoginResponse = {
+  access_token: string;
+};
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -31,19 +37,10 @@ export class AuthController {
 
   @Post('login')
   @ApiOperation({ summary: 'Realizar login e obter token JWT' })
-  @ApiResponse({
-    status: 200,
-    description: 'Login realizado com sucesso.',
-  })
-  @ApiResponse({
-    status: 401,
-    description: 'Credenciais inválidas.',
-  })
-  async login(@Body() body: LoginDto) {
-    const user = await this.authService.validateUser(
-      body.username,
-      body.password,
-    );
+  @ApiResponse({ status: 200, description: 'Login realizado com sucesso.' })
+  @ApiResponse({ status: 401, description: 'Credenciais inválidas.' })
+  async login(@Body() body: LoginDto): Promise<LoginResponse> {
+    const user = await this.authService.validateUser(body.email, body.password);
 
     if (!user) {
       throw new UnauthorizedException('Credenciais inválidas.');
@@ -52,41 +49,23 @@ export class AuthController {
     return this.authService.login(user);
   }
 
-  @Post('register')
-  @ApiOperation({
-    summary: 'Cadastro público de usuário',
-  })
-  @ApiResponse({
-    status: 201,
-    description: 'Usuário registrado com sucesso.',
-  })
-  async register(@Body() body: RegisterDto) {
-    return this.authService.register(body);
-  }
-
   @Post('users')
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(UserRole.ADMINISTRADOR)
+  @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  @ApiOperation({
-    summary: 'Criar usuário administrativo',
-  })
+  @ApiOperation({ summary: 'Criar usuário administrador' })
   @ApiResponse({
     status: 201,
-    description: 'Usuário administrativo criado com sucesso.',
+    description: 'Usuário administrador criado com sucesso.',
   })
-  createUserByAdmin(@Body() body: CreateUserByAdminDto) {
+  createUserByAdmin(@Body() body: CreateUserByAdminDto): Promise<AuthUser> {
     return this.authService.createUserByAdmin(body);
   }
 
   @Get('users')
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(UserRole.ADMINISTRADOR, UserRole.AUDITORIA)
+  @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  @ApiOperation({
-    summary: 'Listar usuários cadastrados',
-  })
-  listUsers() {
+  @ApiOperation({ summary: 'Listar usuários cadastrados' })
+  listUsers(): Promise<AuthUser[]> {
     return this.authService.findAllUsers();
   }
 }

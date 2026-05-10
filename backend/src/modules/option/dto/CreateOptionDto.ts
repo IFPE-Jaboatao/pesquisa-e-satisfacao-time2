@@ -1,13 +1,28 @@
 // option/dto/create-option.dto.ts
 
-import { IsString, IsBoolean, IsOptional, IsNotEmpty } from 'class-validator';
+import {
+  IsInt,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  MaxLength,
+} from 'class-validator';
 
 export class CreateOptionDto {
   @IsString()
   @IsNotEmpty()
-  text: string;
+  @MaxLength(100)
+  label!: string;
 
   @IsOptional()
-  @IsBoolean()
-  isCorrect?: boolean;
+  @IsString()
+  @MaxLength(100)
+  value?: string;
+
+  @IsOptional()
+  @IsInt()
+  score?: number;
+
+  @IsInt()
+  questionId!: number;
 }

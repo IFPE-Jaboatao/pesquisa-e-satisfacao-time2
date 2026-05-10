@@ -11,16 +11,13 @@ import { Survey } from '../../survey/entities/survey.entity';
 import { ResponseItem } from './response-item.entity';
 
 @Entity('responses')
-@Unique(['surveyId', 'userId'])
+@Unique(['surveyId', 'respondentToken'])
 export class Response {
   @PrimaryGeneratedColumn()
   id!: number;
 
   @Column()
   surveyId!: number;
-
-  @Column()
-  userId!: number;
 
   @ManyToOne(() => Survey, (survey) => survey.responses, {
     onDelete: 'CASCADE',
@@ -36,9 +33,6 @@ export class Response {
   @Column({ length: 20, nullable: true })
   shift?: string;
 
-  @Column({ length: 20, nullable: true })
-  semester?: string;
-
   @Column({ length: 100, nullable: true })
   campus?: string;
 
@@ -47,6 +41,9 @@ export class Response {
 
   @Column({ nullable: true })
   wouldRecommend?: boolean;
+
+  @Column({ length: 255 })
+  respondentToken!: string;
 
   @OneToMany(() => ResponseItem, (item) => item.response, {
     cascade: true,
