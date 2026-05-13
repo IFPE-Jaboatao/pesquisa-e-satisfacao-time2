@@ -1,4 +1,4 @@
-# Sistema de Pesquisa de Satisfação
+# Avalia-Plus — Sistema de Pesquisa de Satisfação
 
 ## Descrição
 Este repositório contém o backend do projeto **Avalia-Plus — Sistema de Pesquisa de Satisfação**, desenvolvido utilizando **NestJS**, **TypeORM**, **MySQL** e autenticação com **JWT**.
@@ -17,6 +17,7 @@ O sistema tem como objetivo gerenciar pesquisas de satisfação institucionais, 
 - futura geração de relatórios e métricas.
 
 O backend foi desenvolvido com base nas jornadas e protótipos definidos no Figma do projeto Avalia-Plus, seguindo os requisitos da disciplina de Desenvolvimento Web para implementação de uma API REST com regras reais de negócio.
+
 ---
 
 ## Tecnologias Utilizadas
@@ -42,7 +43,7 @@ O projeto segue a arquitetura padrão do NestJS:
 - **Guards** → proteção de rotas com autenticação JWT
 ---
  
-BACKEND
+### BACKEND
 
 ## Configuração do Ambiente
 ### 1. Instalar dependências
@@ -51,9 +52,16 @@ Dentro da pasta `backend`, execute:
 ```bash
 npm install
 ```
+```bash
 npm install class-validator class-transformer
+```
+```bash
 npm install @nestjs/swagger
+```
+```bash
 npm install @nestjs/jwt passport-jwt
+```
+```bash
 npm install bcryptjs
 ```
 ### 2. Configurar variáveis de ambiente
@@ -73,31 +81,30 @@ JWT_EXPIRES_IN=1d
 
 ```bash
 npm run start:dev
-
 ```
-A API Base:
 
+### API Base:
+```bash
 http://localhost:3000/api
-
 ```
-Swagger:
 
+### Swagger:
+```bash
 http://localhost:3000/api/docs
-
 ```
-Pesquisa Pública:
 
+### Pesquisa Pública:
+```bash
 http://localhost:3000/api/surveys/public/1
-
 ```
-Protótipo (Figma)
+### Protótipo (Figma)
 
 O layout do sistema foi desenvolvido no Figma:
-
-🔗 https://www.figma.com/proto/0jw5ZMS1jzTk8XWhGgaEUT/Pesquisa-de-Satisfa%C3%A7%C3%A3o-Time2--Avalia-Plus-?node-id=179-2&t=digXDiVeJ4Yvltp1-1
-
 ```
-FRONTEND
+🔗 https://www.figma.com/proto/0jw5ZMS1jzTk8XWhGgaEUT/Pesquisa-de-Satisfa%C3%A7%C3%A3o-Time2--Avalia-Plus-?node-id=179-2&t=digXDiVeJ4Yvltp1-1
+```
+
+### FRONTEND
 
 ### 1. Instalar dependências
 Dentro da pasta `frontend`, execute:
@@ -105,12 +112,13 @@ Dentro da pasta `frontend`, execute:
 ```bash
 npm install
 ```
-### 3. Executar o projeto
+
+### 2. Executar o projeto
 
 ```bash
 npm run dev
----
 
+```
 ## Funcionalidades Implementadas até o Momento
 
 ### Módulo Survey
@@ -136,6 +144,7 @@ Responsável pelo gerenciamento das pesquisas de satisfação e controle de disp
 #### DTOs
 - `create-survey.dto.ts`
 - `update-survey.dto.ts`
+  
 ---
 
 ### Módulo Response
@@ -179,6 +188,7 @@ Responsável pelo gerenciamento das perguntas vinculadas às pesquisas.
 - `question.controller.ts`
 - `question.service.ts`
 - `question.entity.ts`
+- 
 ---
 
 ### Módulo Option
@@ -195,6 +205,7 @@ Responsável pelo gerenciamento das opções vinculadas às perguntas.
 - `option.controller.ts`
 - `option.service.ts`
 - `option.entity.ts`
+  
 ---
 
 ### Módulo Auth
@@ -214,10 +225,12 @@ Responsável pela autenticação e proteção das rotas administrativas.
 - `jwt.strategy.ts`
 - `jwt-auth.guard.ts`
 - `user.entity.ts`
+  
 ---
 
 ## Modelagem Atual do Banco de Dados
 A modelagem foi estruturada para atender ao fluxo completo de pesquisas de satisfação, incluindo gerenciamento administrativo, perguntas, opções e submissões de respostas.
+
 ---
 
 ### Tabela `surveys`
@@ -308,11 +321,12 @@ Armazena cada resposta individual vinculada a uma submissão.
 - armazenar respostas objetivas e discursivas
 - permitir análise individual das questões
 ---
-
+---
 ## Fluxo Atual da Aplicação
 
 O fluxo implementado atualmente segue a arquitetura definida para o sistema Avalia-Plus, contemplando o gerenciamento administrativo das pesquisas e o processo público de resposta.
 
+---
 ### Fluxo administrativo
 1. o administrador realiza autenticação utilizando JWT
 2. o administrador cria uma pesquisa
@@ -341,7 +355,9 @@ O fluxo implementado atualmente segue a arquitetura definida para o sistema Aval
 - rotas administrativas exigem autenticação JWT
 - rotas públicas podem ser acessadas sem autenticação
 
+---
 Esse fluxo foi desenvolvido com base na jornada de resposta definida no protótipo do Figma, contemplando tanto a experiência pública do respondente quanto o gerenciamento administrativo da plataforma.
+
 ---
 
 ## Autenticação e Segurança
@@ -358,11 +374,12 @@ O controle de acesso foi implementado utilizando `JwtAuthGuard`, garantindo que 
 - controle de acesso administrativo
 - integração da autenticação com Swagger
 
-### Perfil disponível:
+---
+### Perfil disponível
 
 - "ADMINISTRADOR"
 
-### Exemplo de login:
+### Exemplo de login
 
 ```http
 POST /api/auth/login
@@ -375,6 +392,7 @@ Retorno
 {
   "access_token": "TOKEN_JWT"
 }
+```
 
 ### Uso do Token
 
@@ -385,12 +403,14 @@ Clique em Authorize
 Insira:
 
 Bearer SEU_TOKEN
+
 ---
 
-## Testes
+**Testes**
+
 Os testes da API foram realizados manualmente utilizando **Swagger** e **Postman**, validando autenticação, rotas protegidas, rotas públicas e regras de negócio.
 
-### Endpoints testados manualmente
+**Endpoints testados manualmente**
 
 #### Auth
 - `POST /api/auth/login`
@@ -430,8 +450,8 @@ Os testes da API foram realizados manualmente utilizando **Swagger** e **Postman
 - registro de resposta anônima
 - bloqueio de resposta duplicada por `respondentToken`
 - listagem de respostas por pesquisa
----
 
+---
 ## Etapas do Projeto
 
 ### Etapa 1 — Backend Base
@@ -466,10 +486,12 @@ Planejado:
 * collection de testes exportada
 * integração com frontend React + Flowbite
 * deploy da aplicação
+  
 ---
 
 ## Equipe
 Projeto desenvolvido em equipe para disciplina de Desenvolvimento Web.
+
 ---
 
 ## Licença
