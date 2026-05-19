@@ -10,6 +10,7 @@ import { Response } from './entities/response.entity';
 import { ResponseItem } from './entities/response-item.entity';
 import { CreateResponseDto } from './dto/create-response.dto';
 import { Survey } from '../survey/entities/survey.entity';
+import { Question, QuestionType } from '../question/entities/question.entity';
 
 @Injectable()
 export class ResponseService {
@@ -22,6 +23,9 @@ export class ResponseService {
 
     @InjectRepository(Survey)
     private readonly surveyRepository: Repository<Survey>,
+
+    @InjectRepository(Question)
+    private readonly questionRepository: Repository<Question>,
   ) {}
 
   async create(createResponseDto: CreateResponseDto): Promise<Response> {
@@ -69,6 +73,59 @@ export class ResponseService {
       throw new BadRequestException('Você já respondeu esta pesquisa.');
     }
 
+    for (const item of createResponseDto.items) {
+      const question = await this.questionRepository.findOne({
+        where: {
+          id: item.questionId,
+          surveyId: createResponseDto.surveyId,
+        },
+      });
+
+      if (!question) {
+        throw new BadRequestException(
+          `A pergunta ${item.questionId} não pertence à pesquisa informada.`,
+        );
+      }
+
+      if (question.type === QuestionType.RATING) {
+        if (
+          item.ratingValue === undefined ||
+          item.ratingValue < 1 ||
+          item.ratingValue > 5
+        ) {
+          throw new BadRequestException(
+            `A pergunta ${item.questionId} deve receber uma nota entre 1 e 5.`,
+          );
+        }
+      }
+
+      if (question.type === QuestionType.SINGLE_CHOICE) {
+        if (!item.selectedOption) {
+          throw new BadRequestException(
+            `A pergunta ${item.questionId} deve receber uma opção selecionada.`,
+          );
+        }
+      }
+
+      if (question.type === QuestionType.RECOMMENDATION) {
+        const allowed = ['SIM', 'TALVEZ', 'NAO'];
+
+        if (!item.selectedOption || !allowed.includes(item.selectedOption)) {
+          throw new BadRequestException(
+            `A pergunta ${item.questionId} deve receber SIM, TALVEZ ou NAO.`,
+          );
+        }
+      }
+
+      if (question.type === QuestionType.TEXT) {
+        if (!item.textAnswer || item.textAnswer.trim().length === 0) {
+          throw new BadRequestException(
+            `A pergunta ${item.questionId} deve receber uma resposta em texto.`,
+          );
+        }
+      }
+    }
+
     const response = this.responseRepository.create({
       surveyId: createResponseDto.surveyId,
       respondentToken: createResponseDto.respondentToken,
@@ -82,7 +139,8 @@ export class ResponseService {
       items: createResponseDto.items.map((item) =>
         this.responseItemRepository.create({
           questionId: item.questionId,
-          selectedValue: item.selectedValue,
+          ratingValue: item.ratingValue,
+          selectedOption: item.selectedOption,
           textAnswer: item.textAnswer,
         }),
       ),

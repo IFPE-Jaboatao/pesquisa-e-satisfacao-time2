@@ -21,6 +21,9 @@ import { SurveyService } from './survey.service';
 import { CreateSurveyDto } from './dto/create-survey.dto';
 import { UpdateSurveyDto } from './dto/update-survey.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { RolesGuard } from '../auth/roles.guard';
+import { Roles } from '../auth/roles.decorator';
+import { UserRole } from '../auth/user-role.enum';
 
 @ApiTags('Surveys')
 @Controller('surveys')
@@ -28,7 +31,7 @@ export class SurveyController {
   constructor(private readonly surveyService: SurveyService) {}
 
   @Post()
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Criar uma nova pesquisa' })
   @ApiResponse({ status: 201, description: 'Pesquisa criada com sucesso' })
@@ -37,7 +40,7 @@ export class SurveyController {
   }
 
   @Get()
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Listar todas as pesquisas' })
   @ApiResponse({ status: 200, description: 'Lista de pesquisas retornada' })
@@ -59,7 +62,8 @@ export class SurveyController {
   }
 
   @Get(':id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ADMINISTRADOR)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Buscar pesquisa por ID' })
   @ApiParam({ name: 'id', example: 1 })
@@ -70,7 +74,8 @@ export class SurveyController {
   }
 
   @Patch(':id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ADMINISTRADOR)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Atualizar uma pesquisa' })
   @ApiParam({ name: 'id', example: 1 })
@@ -83,7 +88,8 @@ export class SurveyController {
   }
 
   @Delete(':id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ADMINISTRADOR)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Remover uma pesquisa' })
   @ApiParam({ name: 'id', example: 1 })

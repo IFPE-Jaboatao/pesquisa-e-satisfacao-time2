@@ -19,7 +19,7 @@ export class CreateResponseDto {
     description: 'ID da pesquisa respondida',
   })
   @IsInt()
-  surveyId: number;
+  surveyId!: number;
 
   @ApiProperty({
     example: '550e8400-e29b-41d4-a716-446655440000',
@@ -28,7 +28,7 @@ export class CreateResponseDto {
   @IsString()
   @IsNotEmpty()
   @MaxLength(255)
-  respondentToken: string;
+  respondentToken!: string;
 
   @ApiPropertyOptional({
     example: 'ADS',
@@ -99,5 +99,5 @@ export class CreateResponseDto {
   @ArrayMinSize(1, { message: 'A resposta deve conter pelo menos um item.' })
   @ValidateNested({ each: true })
   @Type(() => CreateResponseItemDto)
-  items: CreateResponseItemDto[];
+  items!: CreateResponseItemDto[];
 }

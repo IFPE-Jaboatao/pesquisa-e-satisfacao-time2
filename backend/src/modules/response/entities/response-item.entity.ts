@@ -4,31 +4,36 @@ import {
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
+  JoinColumn,
 } from 'typeorm';
 import { Response } from './response.entity';
 
 @Entity('response_items')
 export class ResponseItem {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column()
-  responseId: number;
+  responseId!: number;
 
   @ManyToOne(() => Response, (response) => response.items, {
     onDelete: 'CASCADE',
   })
-  response: Response;
+  @JoinColumn({ name: 'responseId' })
+  response!: Response;
 
   @Column()
-  questionId: number;
+  questionId!: number;
 
   @Column({ nullable: true })
-  selectedValue?: number;
+  ratingValue?: number;
+
+  @Column({ length: 100, nullable: true })
+  selectedOption?: string;
 
   @Column({ type: 'text', nullable: true })
   textAnswer?: string;
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
 }

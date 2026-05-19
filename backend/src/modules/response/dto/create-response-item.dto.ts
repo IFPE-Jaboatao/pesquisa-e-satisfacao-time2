@@ -7,7 +7,7 @@ export class CreateResponseItemDto {
     description: 'ID da pergunta respondida',
   })
   @IsInt()
-  questionId: number;
+  questionId!: number;
 
   @ApiPropertyOptional({
     example: 4,
@@ -15,7 +15,8 @@ export class CreateResponseItemDto {
   })
   @IsOptional()
   @IsInt()
-  selectedValue?: number;
+  ratingValue?: number;
+  selectedOption?: string;
 
   @ApiPropertyOptional({
     example: 'Gostei bastante da biblioteca.',
