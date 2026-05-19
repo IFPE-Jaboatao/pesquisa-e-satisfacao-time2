@@ -1,18 +1,23 @@
 import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
-  ValidationArguments,
 } from 'class-validator';
+import { CreateOptionDto } from '../../option/dto/CreateOptionDto';
 
 @ValidatorConstraint({ name: 'NoDuplicateOptions', async: false })
 export class NoDuplicateOptions implements ValidatorConstraintInterface {
-  validate(options: any[], args: ValidationArguments) {
-    const texts = options.map((opt) => opt.text.toLowerCase().trim());
-    const unique = new Set(texts);
-    return texts.length === unique.size;
+  validate(options: CreateOptionDto[]) {
+    if (!options || options.length === 0) {
+      return true;
+    }
+
+    const labels = options.map((opt) => opt.label.toLowerCase().trim());
+    const unique = new Set(labels);
+
+    return labels.length === unique.size;
   }
 
-  defaultMessage(args: ValidationArguments) {
+  defaultMessage() {
     return 'Não pode haver opções duplicadas';
   }
 }

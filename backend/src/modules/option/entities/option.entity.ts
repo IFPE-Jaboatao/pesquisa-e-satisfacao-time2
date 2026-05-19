@@ -1,6 +1,12 @@
 // option/entities/option.entity.ts
 
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  JoinColumn,
+} from 'typeorm';
 import { Question } from '../../question/entities/question.entity';
 
 @Entity('options')
@@ -23,5 +29,6 @@ export class Option {
   @ManyToOne(() => Question, (question) => question.options, {
     onDelete: 'CASCADE',
   })
+  @JoinColumn({ name: 'questionId' })
   question!: Question;
 }
