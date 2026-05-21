@@ -1,13 +1,17 @@
 // question/question.controller.ts
 
-import { Body, Controller, Post, Get } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth } from '@nestjs/swagger';
+
 import { CreateQuestionDto } from './dto/create-question.dto';
 import { QuestionService } from './question.service';
-import { UseGuards } from '@nestjs/common';
-import { ApiBearerAuth } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { RolesGuard } from '../auth/roles.guard';
+import { Roles } from '../auth/roles.decorator';
+import { UserRole } from '../auth/user-role.enum';
 
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles(UserRole.ADMINISTRADOR)
 @ApiBearerAuth()
 @Controller('questions')
 export class QuestionController {
@@ -17,9 +21,8 @@ export class QuestionController {
   create(@Body() dto: CreateQuestionDto) {
     return this.service.create(dto);
   }
+
   @Get()
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
   findAll() {
     return this.service.findAll();
   }

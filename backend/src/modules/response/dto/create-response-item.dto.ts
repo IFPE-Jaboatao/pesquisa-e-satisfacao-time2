@@ -16,6 +16,13 @@ export class CreateResponseItemDto {
   @IsOptional()
   @IsInt()
   ratingValue?: number;
+
+  @ApiPropertyOptional({
+    example: 'Sim',
+    description: 'Opção selecionada em perguntas objetivas',
+  })
+  @IsOptional()
+  @IsString()
   selectedOption?: string;
 
   @ApiPropertyOptional({
