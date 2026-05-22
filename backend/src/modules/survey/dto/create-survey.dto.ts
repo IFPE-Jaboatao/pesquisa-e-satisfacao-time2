@@ -13,9 +13,15 @@ export class CreateSurveyDto {
     example: 'Pesquisa de Satisfação 2026.1',
     description: 'Título da pesquisa',
   })
-  @IsString()
-  @IsNotEmpty()
-  @MaxLength(150)
+  @IsString({
+    message: 'O título deve ser um texto.',
+  })
+  @IsNotEmpty({
+    message: 'O título da pesquisa é obrigatório.',
+  })
+  @MaxLength(150, {
+    message: 'O título deve ter no máximo 150 caracteres.',
+  })
   title!: string;
 
   @ApiPropertyOptional({
@@ -23,7 +29,9 @@ export class CreateSurveyDto {
     description: 'Descrição da pesquisa',
   })
   @IsOptional()
-  @IsString()
+  @IsString({
+    message: 'A descrição deve ser um texto.',
+  })
   description?: string;
 
   @ApiPropertyOptional({
@@ -31,7 +39,9 @@ export class CreateSurveyDto {
     description: 'Indica se a pesquisa está ativa',
   })
   @IsOptional()
-  @IsBoolean()
+  @IsBoolean({
+    message: 'isActive deve ser verdadeiro ou falso.',
+  })
   isActive?: boolean;
 
   @ApiPropertyOptional({
@@ -39,7 +49,12 @@ export class CreateSurveyDto {
     description: 'Data de início da pesquisa',
   })
   @IsOptional()
-  @IsDateString()
+  @IsDateString(
+    {},
+    {
+      message: 'A data inicial deve estar em formato válido.',
+    },
+  )
   startDate?: string;
 
   @ApiPropertyOptional({
@@ -47,7 +62,12 @@ export class CreateSurveyDto {
     description: 'Data de encerramento da pesquisa',
   })
   @IsOptional()
-  @IsDateString()
+  @IsDateString(
+    {},
+    {
+      message: 'A data final deve estar em formato válido.',
+    },
+  )
   endDate?: string;
 
   @ApiPropertyOptional({
@@ -55,6 +75,8 @@ export class CreateSurveyDto {
     description: 'Indica se a pesquisa é anônima',
   })
   @IsOptional()
-  @IsBoolean()
+  @IsBoolean({
+    message: 'isAnonymous deve ser verdadeiro ou falso.',
+  })
   isAnonymous?: boolean;
 }

@@ -15,15 +15,17 @@ import { NoDuplicateOptions } from '../validators/no-duplicate-options.validator
 import { QuestionType } from '../entities/question.entity';
 
 export class CreateQuestionDto {
-  @IsString()
-  @IsNotEmpty()
+  @IsString({ message: 'O título deve ser um texto.' })
+  @IsNotEmpty({ message: 'O título da pergunta é obrigatório.' })
   title!: string;
 
   @IsOptional()
-  @IsString()
+  @IsString({ message: 'A descrição deve ser um texto.' })
   description?: string;
 
-  @IsEnum(QuestionType)
+  @IsEnum(QuestionType, {
+    message: 'O tipo da pergunta deve ser válido.',
+  })
   type!: QuestionType;
 
   @IsString()

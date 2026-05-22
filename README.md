@@ -103,6 +103,17 @@ O layout do sistema foi desenvolvido no Figma:
 ```
 🔗 https://www.figma.com/proto/0jw5ZMS1jzTk8XWhGgaEUT/Pesquisa-de-Satisfa%C3%A7%C3%A3o-Time2--Avalia-Plus-?node-id=179-2&t=digXDiVeJ4Yvltp1-1
 ```
+## Importar Collection do Postman
+
+1. Abra o Postman
+2. Clique em Import
+3. Selecione:
+
+docs/Avalia-Plus-Collection.json
+
+4. Inicie o backend
+5. Execute os testes da collection
+
 
 ### FRONTEND
 

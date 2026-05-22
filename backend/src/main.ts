@@ -1,4 +1,4 @@
-import { ValidationPipe } from '@nestjs/common';
+import { BadRequestException, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
@@ -13,6 +13,17 @@ async function bootstrap() {
       whitelist: true,
       forbidNonWhitelisted: true,
       transform: true,
+      exceptionFactory: (errors) => {
+        const messages = errors.flatMap((error) => {
+          if (error.constraints?.whitelistValidation) {
+            return [`O campo ${error.property} não é permitido.`];
+          }
+
+          return Object.values(error.constraints || {});
+        });
+
+        return new BadRequestException(messages);
+      },
     }),
   );
 
