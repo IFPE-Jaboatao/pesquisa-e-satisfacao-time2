@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { apiFetch } from "@/lib/api";
 
 export default function Comentariosform() {
   const router = useRouter();
@@ -19,16 +20,96 @@ export default function Comentariosform() {
     setAnswers({ ...answers, [name]: value });
   }
 
-  function handleSubmit() {
-    console.log("Respostas:", answers);
+  async function handleSubmit() {
+  try {
+    const inicio = JSON.parse(localStorage.getItem("inicio") || "{}");
+    const infraestrutura = JSON.parse(localStorage.getItem("infraestrutura") || "{}");
+    const seguranca = JSON.parse(localStorage.getItem("seguranca") || "{}");
+    const bibliotecaAtendimento = JSON.parse(
+      localStorage.getItem("bibliotecaAtendimento") || "{}",
+    );
+    const limpeza = JSON.parse(localStorage.getItem("limpeza") || "{}");
+
+    const payload = {
+      surveyId: 2,
+      respondentToken: crypto.randomUUID(),
+      course: inicio.curso,
+      period: inicio.periodo,
+      shift: inicio.turno,
+      semester: inicio.semestre,
+      campus: inicio.campus,
+      finalComment: `${answers.gosta} | ${answers.melhorar} | ${answers.sugestao}`,
+      wouldRecommend: answers.recomendaria === "Sim",
+      items: [
+        // Infraestrutura
+        { questionId: 29, ratingValue: infraestrutura.qualidade },
+        {
+          questionId: 30,
+          selectedOption:
+            infraestrutura.laboratorios === "Sim"
+              ? "SIM"
+              : infraestrutura.laboratorios === "Não"
+                ? "NAO"
+                : "NAO_SE_APLICA",
+        },,
+        { questionId: 31, ratingValue: infraestrutura.wifi },
+        { questionId: 32, ratingValue: infraestrutura.convivencia },
+        { questionId: 33, ratingValue: infraestrutura.acessibilidade },
+
+        // Segurança
+        { questionId: 34, ratingValue: seguranca.seguranca },
+        { questionId: 35, ratingValue: seguranca.acesso },
+        { questionId: 36, ratingValue: seguranca.iluminacao },
+        { questionId: 37, ratingValue: seguranca.segurancaNoturna },
+
+        // Biblioteca e Atendimento
+        { questionId: 38, ratingValue: bibliotecaAtendimento.acervo },
+        { questionId: 39, ratingValue: bibliotecaAtendimento.espaco },
+        { questionId: 40, ratingValue: bibliotecaAtendimento.secretaria },
+        { questionId: 41, ratingValue: bibliotecaAtendimento.temporesposta },
+
+        // Limpeza
+        { questionId: 42, ratingValue: limpeza.salas },
+        { questionId: 43, ratingValue: limpeza.banheiros },
+        { questionId: 44, textAnswer: limpeza.comentario },
+
+        // Comentários finais
+        { questionId: 45, textAnswer: answers.gosta },
+        { questionId: 46, textAnswer: answers.melhorar },
+        { questionId: 47, textAnswer: answers.sugestao },
+        {
+          questionId: 48,
+          selectedOption:
+            answers.recomendaria === "Sim"
+              ? "SIM"
+              : answers.recomendaria === "Talvez"
+                ? "TALVEZ"
+                : "NAO",
+        },
+      ],
+    };
+
+    await apiFetch("/responses", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
+
+    localStorage.clear();
     router.push("/sucesso");
+  } catch (error) {
+    alert(error instanceof Error ? error.message : "Erro ao enviar resposta");
   }
+}
 
   return (
     <div className="bg-slate-300 p-6 rounded-2xl shadow-lg w-full max-w-md">
       {/* Topo */}
       <div className="flex justify-between items-center mb-4">
-        <button className="bg-blue-600 text-white px-4 py-1 rounded-full">
+        <button
+          type="button"
+          onClick={() => router.back()}
+          className="bg-blue-600 text-white px-4 py-1 rounded-full"
+        >
           Voltar
         </button>
         <span className="text-black text-sm font-semibold">Etapa 5 de 5</span>

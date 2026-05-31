@@ -1,6 +1,6 @@
 'use client';
 
-import StepForm from "@/components/Stepform";
+import Infraestrutura from "@/components/Infraestrutura";
 
 export default function InfraestruturaPage() {
   return (
@@ -13,7 +13,7 @@ export default function InfraestruturaPage() {
         Infraestrutura
       </h2>
 
-      <StepForm />
+      <Infraestrutura/>
     </main>
   );
 }

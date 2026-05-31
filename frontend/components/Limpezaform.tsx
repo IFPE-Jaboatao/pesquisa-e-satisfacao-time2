@@ -17,7 +17,8 @@ export default function Limpezaform() {
   }
 
   function handleSubmit() {
-    console.log("Respostas:", answers);
+    localStorage.setItem("limpeza", JSON.stringify(answers));
+
     router.push("/comentarios");
   }
 
@@ -25,7 +26,11 @@ export default function Limpezaform() {
     <div className="bg-slate-300 p-6 rounded-2xl shadow-lg w-full max-w-md">
       {/* Topo */}
       <div className="flex justify-between items-center mb-4">
-        <button className="bg-blue-600 text-white px-4 py-1 rounded-full">
+        <button
+          type="button"
+          onClick={() => router.back()}
+          className="bg-blue-600 text-white px-4 py-1 rounded-full"
+        >
           Voltar
         </button>
         <span className="text-black text-sm font-semibold">Etapa 4 de 5</span>

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function Stepform() {
+export default function Infraestrutura() {
   const router = useRouter();
   const [answers, setAnswers] = useState({
     qualidade: 0,
@@ -18,7 +18,8 @@ export default function Stepform() {
   }
 
   function handleSubmit() {
-    console.log("Respostas:", answers);
+    localStorage.setItem("infraestrutura", JSON.stringify(answers));
+
     router.push("/seguranca");
   }
 
@@ -26,7 +27,11 @@ export default function Stepform() {
     <div className="bg-slate-300 p-6 rounded-2xl shadow-lg w-full max-w-md">
       {/* Topo */}
       <div className="flex justify-between items-center mb-4">
-        <button className="bg-blue-600 text-white px-4 py-1 rounded-full">
+        <button
+          type="button"
+          onClick={() => router.back()}
+          className="bg-blue-600 text-white px-4 py-1 rounded-full"
+        >
           Voltar
         </button>
         <span className="text-black text-sm font-semibold">Etapa 1 de 5</span>
@@ -87,8 +92,9 @@ export default function Stepform() {
 
       {/* Botão */}
       <button 
-      onClick={handleSubmit}
-      className="mt-6 w-full bg-blue-600 text-white py-2 rounded-full hover:bg-blue-700">
+        onClick={handleSubmit}
+        className="mt-6 w-full bg-blue-600 text-white py-2 rounded-full hover:bg-blue-700"
+      >
         Próxima
       </button>
 

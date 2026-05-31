@@ -1,6 +1,15 @@
 // question/question.controller.ts
 
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Delete,
+  Param,
+  ParseIntPipe,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
 
 import { CreateQuestionDto } from './dto/create-question.dto';
@@ -25,5 +34,10 @@ export class QuestionController {
   @Get()
   findAll() {
     return this.service.findAll();
+  }
+
+  @Delete(':id')
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.service.remove(id);
   }
 }

@@ -18,7 +18,8 @@ export default function Security() {
   }
 
   function handleSubmit() {
-    console.log("Respostas:", answers);
+    localStorage.setItem("seguranca", JSON.stringify(answers));
+
     router.push("/biblioteca&atendimento");
   }
 
@@ -26,7 +27,11 @@ export default function Security() {
     <div className="bg-slate-300 p-6 rounded-2xl shadow-lg w-full max-w-md">
       {/* Topo */}
       <div className="flex justify-between items-center mb-4">
-        <button className="bg-blue-600 text-white px-4 py-1 rounded-full">
+        <button
+          type="button"
+          onClick={() => router.back()}
+          className="bg-blue-600 text-white px-4 py-1 rounded-full"
+        >
           Voltar
         </button>
         <span className="text-black text-sm font-semibold">Etapa 2 de 5</span>

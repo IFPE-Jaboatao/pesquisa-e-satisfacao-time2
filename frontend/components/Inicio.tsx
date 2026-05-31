@@ -18,9 +18,10 @@ export default function FormCard() {
   }
 
   function handleSubmit() {
-    console.log("Dados:", form);
+    localStorage.setItem("inicio", JSON.stringify(form));
+
     alert("Pesquisa iniciada!");
-    router.push("/inflaestrutura");
+    router.push("/infraestrutura");
   }
 
   return (

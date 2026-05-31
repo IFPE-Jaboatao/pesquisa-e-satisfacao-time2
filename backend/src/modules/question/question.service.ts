@@ -22,4 +22,8 @@ export class QuestionService {
       relations: ['options'], // Isso traz as opções da pesquisa junto com a pergunta
     });
   }
+  async remove(id: number) {
+    await this.questionRepository.delete(id);
+    return { message: 'Pergunta removida com sucesso.' };
+  }
 }
