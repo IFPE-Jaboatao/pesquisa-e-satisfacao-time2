@@ -1,7 +1,9 @@
-'use client';
+"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import RatingQuestion from "@/components/RatingQuestion";
+import ProgressBar from "@/components/ProgressBar";
 
 export default function Infraestrutura() {
   const router = useRouter();
@@ -24,27 +26,24 @@ export default function Infraestrutura() {
   }
 
   return (
-    <div className="bg-slate-300 p-6 rounded-2xl shadow-lg w-full max-w-md">
+    <div className="bg-white border border-[#9BDDE5] p-6 rounded-2xl shadow-lg w-full max-w-md">
       {/* Topo */}
       <div className="flex justify-between items-center mb-4">
         <button
           type="button"
           onClick={() => router.back()}
-          className="bg-blue-600 text-white px-4 py-1 rounded-full"
+          className="bg-[#0B74DE] text-white px-4 py-1 rounded-full"
         >
           Voltar
         </button>
-        <span className="text-black text-sm font-semibold">Etapa 1 de 5</span>
       </div>
 
       {/* Barra de progresso */}
-      <div className="w-full bg-gray-300 rounded-full h-3 mb-4">
-        <div className="bg-blue-600 h-3 rounded-full w-[20%]" />
-      </div>
+      <ProgressBar step={1} total={5} />
 
       {/* Perguntas */}
       <div className="text-black space-y-4 text-sm">
-        <Question
+        <RatingQuestion
           text="Como você avalia a qualidade das salas de aula, laboratórios e equipamentos?"
           value={answers.qualidade}
           onChange={(v) => setRating("qualidade", v)}
@@ -71,19 +70,19 @@ export default function Infraestrutura() {
           </div>
         </div>
 
-        <Question
+        <RatingQuestion
           text="Como você avalia o Wi-Fi?"
           value={answers.wifi}
           onChange={(v) => setRating("wifi", v)}
         />
 
-        <Question
+        <RatingQuestion
           text="Como você avalia as áreas de convivência?"
           value={answers.convivencia}
           onChange={(v) => setRating("convivencia", v)}
         />
 
-        <Question
+        <RatingQuestion
           text="Como você a acessibilidade?"
           value={answers.acessibilidade}
           onChange={(v) => setRating("acessibilidade", v)}
@@ -91,9 +90,9 @@ export default function Infraestrutura() {
       </div>
 
       {/* Botão */}
-      <button 
+      <button
         onClick={handleSubmit}
-        className="mt-6 w-full bg-blue-600 text-white py-2 rounded-full hover:bg-blue-700"
+        className="mt-6 w-full bg-[#0B74DE] text-white py-2 rounded-full hover:bg-[#075FB5]"
       >
         Próxima
       </button>
@@ -103,45 +102,6 @@ export default function Infraestrutura() {
         Sua participação é anônima. <br />
         Nenhuma informação pessoal será coletada.
       </p>
-    </div>
-  );
-}
-
-/* ⭐ Componente de avaliação */
-function Question({
-  text,
-  value,
-  onChange,
-}: {
-  text: string;
-  value: number;
-  onChange: (v: number) => void;
-}) {
-  const emojis = ["😡", "🙁", "😐", "🙂", "😄"];
-
-  return (
-    <div>
-      <p className="mb-1 font-medium">{text}</p>
-
-      <div className="flex gap-2">
-        {emojis.map((emoji, index) => {
-          const rating = index + 1;
-
-          return (
-            <button
-              key={rating}
-              onClick={() => onChange(rating)}
-              className={`text-xl px-2 py-1 rounded transition ${
-                value === rating
-                  ? "bg-yellow-300 scale-110"
-                  : "hover:scale-110"
-              }`}
-            >
-              {emoji}
-            </button>
-          );
-        })}
-      </div>
     </div>
   );
 }

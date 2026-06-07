@@ -1,7 +1,9 @@
-'use client';
+"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import RatingQuestion from "@/components/RatingQuestion";
+import ProgressBar from "@/components/ProgressBar";
 
 export default function Security() {
   const router = useRouter();
@@ -10,7 +12,6 @@ export default function Security() {
     acesso: 0,
     iluminacao: 0,
     segurancaNoturna: 0,
-    
   });
 
   function setRating(field: string, value: number) {
@@ -24,45 +25,42 @@ export default function Security() {
   }
 
   return (
-    <div className="bg-slate-300 p-6 rounded-2xl shadow-lg w-full max-w-md">
+    <div className="bg-white border border-[#9BDDE5] p-6 rounded-2xl shadow-lg w-full max-w-md">
       {/* Topo */}
       <div className="flex justify-between items-center mb-4">
         <button
           type="button"
           onClick={() => router.back()}
-          className="bg-blue-600 text-white px-4 py-1 rounded-full"
+          className="bg-[#0B74DE] text-white px-4 py-1 rounded-full"
         >
           Voltar
         </button>
-        <span className="text-black text-sm font-semibold">Etapa 2 de 5</span>
       </div>
 
       {/* Barra de progresso */}
-      <div className="w-full bg-gray-300 rounded-full h-3 mb-4">
-        <div className="bg-blue-600 h-3 rounded-full w-[40%]" />
-      </div>
+      <ProgressBar step={2} total={5} />
 
       {/* Perguntas */}
       <div className="text-black space-y-4 text-sm">
-        <Question
+        <RatingQuestion
           text="Como você avalia a segurança do campus?"
           value={answers.seguranca}
           onChange={(v) => setRating("seguranca", v)}
         />
 
-        <Question
+        <RatingQuestion
           text="Como você avalia o controle de acesso?"
           value={answers.acesso}
           onChange={(v) => setRating("acesso", v)}
         />
 
-        <Question
+        <RatingQuestion
           text="Como você avalia a iluminação externa do campus?"
           value={answers.iluminacao}
           onChange={(v) => setRating("iluminacao", v)}
         />
 
-        <Question
+        <RatingQuestion
           text="Como você avalia a segurança do periodo noturno?"
           value={answers.segurancaNoturna}
           onChange={(v) => setRating("segurancaNoturna", v)}
@@ -71,8 +69,9 @@ export default function Security() {
 
       {/* Botão */}
       <button
-      onClick={handleSubmit}
-      className="mt-6 w-full bg-blue-600 text-white py-2 rounded-full hover:bg-blue-700">
+        onClick={handleSubmit}
+        className="mt-6 w-full bg-[#0B74DE] text-white py-2 rounded-full hover:bg-[#075FB5]"
+      >
         Próxima
       </button>
 
@@ -81,45 +80,6 @@ export default function Security() {
         Sua participação é anônima. <br />
         Nenhuma informação pessoal será coletada.
       </p>
-    </div>
-  );
-}
-
-/* ⭐ Componente de avaliação */
-function Question({
-  text,
-  value,
-  onChange,
-}: {
-  text: string;
-  value: number;
-  onChange: (v: number) => void;
-}) {
-  const emojis = ["😡", "🙁", "😐", "🙂", "😄"];
-
-  return (
-    <div>
-      <p className="mb-1 font-medium">{text}</p>
-
-      <div className="flex gap-2">
-        {emojis.map((emoji, index) => {
-          const rating = index + 1;
-
-          return (
-            <button
-              key={rating}
-              onClick={() => onChange(rating)}
-              className={`text-xl px-2 py-1 rounded transition ${
-                value === rating
-                  ? "bg-yellow-300 scale-110"
-                  : "hover:scale-110"
-              }`}
-            >
-              {emoji}
-            </button>
-          );
-        })}
-      </div>
     </div>
   );
 }

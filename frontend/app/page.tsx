@@ -1,15 +1,14 @@
-'use client';
+"use client";
 
-import FormCard from "@/components/Inicio";
+import Header from "@/components/Header";
+import Inicio from "@/components/Inicio";
 
 export default function Home() {
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center bg-gray-200 p-4">
-      <h1 className="text-black text-2xl font-semibold mb-6">
-        Pesquisa de Satisfação
-      </h1>
+    <main className="min-h-screen bg-[#EAF7FA] flex flex-col items-center p-6">
+      <Header />
 
-      <FormCard />
+      <Inicio />
     </main>
   );
 }

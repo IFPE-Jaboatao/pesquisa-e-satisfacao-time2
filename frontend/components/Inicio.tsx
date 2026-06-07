@@ -1,10 +1,12 @@
-'use client';
+"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { apiFetch } from "@/lib/api";
 
 export default function FormCard() {
   const router = useRouter();
+
   const [form, setForm] = useState({
     curso: "ADS",
     periodo: "2026.1",
@@ -13,22 +15,39 @@ export default function FormCard() {
     campus: "Jaboatão dos Guararapes",
   });
 
+  const [loading, setLoading] = useState(false);
+
   function handleChange(e: React.ChangeEvent<HTMLSelectElement>) {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
 
-  function handleSubmit() {
-    localStorage.setItem("inicio", JSON.stringify(form));
+  async function handleSubmit() {
+    try {
+      setLoading(true);
 
-    alert("Pesquisa iniciada!");
-    router.push("/infraestrutura");
+      localStorage.setItem("inicio", JSON.stringify(form));
+
+      const survey = await apiFetch("/surveys/public/2");
+
+      localStorage.setItem("survey", JSON.stringify(survey));
+      localStorage.setItem("surveyId", String(survey.id));
+
+      router.push("/infraestrutura");
+    } catch (error) {
+      alert(
+        error instanceof Error ? error.message : "Erro ao carregar pesquisa.",
+      );
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
-    <div className="bg-slate-300 p-6 rounded-2xl shadow-lg w-full max-w-md">
+    <div className="bg-white border border-[#9BDDE5] p-6 rounded-2xl shadow-lg w-full max-w-md">
       <p className="text-black text-center text-sm mb-2">
         Sua participação é anônima.
       </p>
+
       <p className="text-black text-center text-sm mb-4">
         Nenhuma informação pessoal será coletada.
       </p>
@@ -124,9 +143,10 @@ export default function FormCard() {
 
       <button
         onClick={handleSubmit}
-        className="mt-6 w-full bg-blue-600 text-white py-2 rounded-full hover:bg-blue-700 transition"
+        disabled={loading}
+        className="mt-6 w-full bg-[#0B74DE] text-white py-2 rounded-full hover:bg-[#075FB5] transition disabled:bg-gray-400"
       >
-        Iniciar Pesquisa
+        {loading ? "Carregando pesquisa..." : "Iniciar Pesquisa"}
       </button>
     </div>
   );
