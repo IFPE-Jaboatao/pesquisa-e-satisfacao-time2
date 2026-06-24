@@ -49,6 +49,20 @@ export class AuthController {
     return this.authService.login(user);
   }
 
+  @Post('register')
+  @ApiOperation({ summary: 'Criar primeiro administrador do sistema' })
+  @ApiResponse({
+    status: 201,
+    description: 'Primeiro administrador criado com sucesso.',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'O administrador inicial já foi cadastrado.',
+  })
+  createFirstAdmin(@Body() body: CreateUserByAdminDto): Promise<AuthUser> {
+    return this.authService.createFirstAdmin(body);
+  }
+
   @Post('users')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()

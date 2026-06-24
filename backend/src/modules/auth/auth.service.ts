@@ -97,6 +97,20 @@ export class AuthService {
     };
   }
 
+  async createFirstAdmin(
+    createUserDto: CreateUserByAdminDto,
+  ): Promise<AuthUser> {
+    const totalUsers = await this.userRepository.count();
+
+    if (totalUsers > 0) {
+      throw new BadRequestException(
+        'O administrador inicial já foi cadastrado. Faça login para criar novos usuários.',
+      );
+    }
+
+    return this.createUserByAdmin(createUserDto);
+  }
+
   async findAllUsers(): Promise<AuthUser[]> {
     const users = await this.userRepository.find({
       order: { id: 'ASC' },

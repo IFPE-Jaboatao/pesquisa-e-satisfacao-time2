@@ -17,6 +17,23 @@ export class SurveyService {
   ) {}
 
   private validateDates(startDate?: Date | null, endDate?: Date | null): void {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (startDate) {
+      startDate.setHours(0, 0, 0, 0);
+    }
+
+    if (endDate) {
+      endDate.setHours(0, 0, 0, 0);
+    }
+
+    if (startDate && startDate < today) {
+      throw new BadRequestException(
+        'A data inicial da pesquisa não pode ser anterior à data atual.',
+      );
+    }
+
     if (startDate && endDate && startDate > endDate) {
       throw new BadRequestException(
         'A data de início não pode ser maior que a data de término.',
@@ -40,6 +57,18 @@ export class SurveyService {
       startDate,
       endDate,
     });
+
+    const existingSurvey = await this.surveyRepository.findOne({
+      where: {
+        title: createSurveyDto.title,
+      },
+    });
+
+    if (existingSurvey) {
+      throw new BadRequestException(
+        'Já existe uma pesquisa cadastrada com este título.',
+      );
+    }
 
     return this.surveyRepository.save(survey);
   }

@@ -34,9 +34,23 @@ export default function Comentariosform() {
       );
       const limpeza = JSON.parse(localStorage.getItem("limpeza") || "{}");
 
+      const surveyId = Number(localStorage.getItem("surveyId"));
+
+      if (!surveyId) {
+        alert("Pesquisa não encontrada. Volte para a tela inicial.");
+        return;
+      }
+
+      let respondentToken = localStorage.getItem("respondentToken");
+
+      if (!respondentToken) {
+        respondentToken = crypto.randomUUID();
+        localStorage.setItem("respondentToken", respondentToken);
+      }
+
       const payload = {
-        surveyId: 2,
-        respondentToken: crypto.randomUUID(),
+        surveyId,
+        respondentToken,
         course: inicio.curso,
         period: inicio.periodo,
         shift: inicio.turno,
@@ -98,7 +112,17 @@ export default function Comentariosform() {
         body: JSON.stringify(payload),
       });
 
-      localStorage.clear();
+      // Limpa apenas os dados da pesquisa
+      localStorage.removeItem("inicio");
+      localStorage.removeItem("infraestrutura");
+      localStorage.removeItem("seguranca");
+      localStorage.removeItem("bibliotecaAtendimento");
+      localStorage.removeItem("limpeza");
+      localStorage.removeItem("survey");
+      localStorage.removeItem("surveyId");
+
+      // Mantém respondentToken para bloquear duplicidade
+
       router.push("/sucesso");
     } catch (error) {
       alert(error instanceof Error ? error.message : "Erro ao enviar resposta");
@@ -106,7 +130,7 @@ export default function Comentariosform() {
   }
 
   return (
-   <div className="bg-white border border-[#9BDDE5] p-6 rounded-2xl shadow-lg w-full max-w-md">
+    <div className="bg-white border border-[#9BDDE5] p-6 rounded-2xl shadow-lg w-full max-w-md">
       {/* Topo */}
       <div className="flex justify-between items-center mb-4">
         <button

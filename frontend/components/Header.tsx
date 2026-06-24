@@ -12,7 +12,9 @@ export default function Header() {
           className="md:w-16 md:h-16"
         />
         <div>
-          <h1 className="text-xl md:text-3xl font-bold text-blue-700 leading-none">Avalia-Plus</h1>
+          <h1 className="text-xl md:text-3xl font-bold text-blue-700 leading-none">
+            Avalia-Plus
+          </h1>
           <p className="text-gray-600">Sistema de Pesquisa de Satisfação</p>
         </div>
       </div>

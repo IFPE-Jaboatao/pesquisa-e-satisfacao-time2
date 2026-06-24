@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
 import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { apiFetch } from "@/lib/api";
 
-export default function CadastroAdminPage() {
+export default function CadastroAcessoPage() {
   const router = useRouter();
 
   const [form, setForm] = useState({
@@ -22,7 +22,7 @@ export default function CadastroAdminPage() {
         return;
       }
 
-      await apiFetch("/auth/users", {
+      await apiFetch("/auth/register", {
         method: "POST",
         body: JSON.stringify({
           username: form.username,
@@ -32,7 +32,7 @@ export default function CadastroAdminPage() {
       });
 
       alert("Administrador cadastrado com sucesso!");
-      router.push("/admin/login");
+      router.push("/acesso/login");
     } catch (error) {
       alert(
         error instanceof Error
@@ -48,17 +48,20 @@ export default function CadastroAdminPage() {
         <Image
           src="/imagens/logo-icon.png"
           alt="Avalia Plus"
-          width={90}
-          height={90}
+          width={80}
+          height={80}
         />
 
-        <h1 className="text-3xl font-bold text-[#111827] mt-4">
-          Avalia-Plus
-        </h1>
+        <h1 className="text-3xl font-bold text-[#111827] mt-4">Avalia-Plus</h1>
 
-        <p className="text-gray-600 mb-10">
-          Sistema de Pesquisa de Satisfação
-        </p>
+        <p className="text-gray-600 mb-10">Sistema de Pesquisa de Satisfação</p>
+
+        <Image
+          src="/imagens/tela-cadastro.png"
+          alt=""
+          width={500}
+          height={500}
+        />
 
         <h2 className="text-xl font-bold text-[#111827] mb-2">
           Cadastro de Administrador
@@ -122,14 +125,6 @@ export default function CadastroAdminPage() {
             className="w-full bg-[#0B74DE] text-white py-3 rounded-lg hover:bg-[#075FB5] transition"
           >
             Criar conta
-          </button>
-
-          <button
-            type="button"
-            onClick={() => router.push("/admin/login")}
-            className="w-full text-sm text-[#0B74DE] mt-4"
-          >
-            Já possui uma conta? Fazer login
           </button>
         </div>
       </section>

@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useRouter } from "next/navigation";
 import { CheckCircle } from "lucide-react";
@@ -12,12 +12,8 @@ export default function SuccessCard() {
 
   return (
     <div className="bg-white p-8 rounded-3xl shadow-xl w-full max-w-md text-center">
-
       <div className="flex justify-center mb-4">
-        <CheckCircle
-          size={80}
-          className="text-green-600"
-        />
+        <CheckCircle size={80} className="text-green-600" />
       </div>
 
       <h2 className="text-2xl font-bold text-green-700 mb-3">

@@ -26,7 +26,7 @@ export default function BibliotecaAtendimento() {
   }
 
   return (
-   <div className="bg-white border border-[#9BDDE5] p-6 rounded-2xl shadow-lg w-full max-w-md">
+    <div className="bg-white border border-[#9BDDE5] p-6 rounded-2xl shadow-lg w-full max-w-md">
       {/* Topo */}
       <div className="flex justify-between items-center mb-4">
         <button

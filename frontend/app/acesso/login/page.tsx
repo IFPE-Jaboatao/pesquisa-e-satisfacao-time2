@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { apiFetch } from "@/lib/api";
 
-export default function LoginAdminPage() {
+export default function LoginAcessoPage() {
   const router = useRouter();
 
   const [form, setForm] = useState({
@@ -38,13 +38,16 @@ export default function LoginAdminPage() {
           height={90}
         />
 
-        <h1 className="text-3xl font-bold text-[#111827] mt-4">
-          Avalia-Plus
-        </h1>
+        <h1 className="text-3xl font-bold text-[#111827] mt-4">Avalia-Plus</h1>
 
-        <p className="text-gray-600 mb-10">
-          Sistema de Pesquisa de Satisfação
-        </p>
+        <p className="text-gray-600 mb-10">Sistema de Pesquisa de Satisfação</p>
+
+        <Image
+          src="/imagens/tela-login.png"
+          alt="Imagem Login"
+          width={500}
+          height={500}
+        />
 
         <p className="text-center font-semibold text-[#111827]">
           Gerencie pesquisas, usuários e respostas
@@ -88,14 +91,6 @@ export default function LoginAdminPage() {
             className="w-full bg-[#0B74DE] text-white py-3 rounded-lg hover:bg-[#075FB5]"
           >
             Entrar
-          </button>
-
-          <button
-            type="button"
-            onClick={() => router.push("/admin/cadastro")}
-            className="w-full text-sm text-[#0B74DE] mt-4"
-          >
-            Não tem conta? Criar conta
           </button>
         </div>
       </section>
