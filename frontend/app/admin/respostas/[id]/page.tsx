@@ -44,9 +44,7 @@ export default function VisualizarRespostaPage() {
         setResponse(data);
       } catch (error) {
         alert(
-          error instanceof Error
-            ? error.message
-            : "Erro ao carregar resposta.",
+          error instanceof Error ? error.message : "Erro ao carregar resposta.",
         );
       } finally {
         setLoading(false);
@@ -82,12 +80,24 @@ export default function VisualizarRespostaPage() {
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm mb-6">
-        <p><strong>Campus:</strong> {response.campus || "-"}</p>
-        <p><strong>Curso:</strong> {response.course || "-"}</p>
-        <p><strong>Período:</strong> {response.period || "-"}</p>
-        <p><strong>Turno:</strong> {response.shift || "-"}</p>
-        <p><strong>Semestre:</strong> {response.semester || "-"}</p>
-        <p><strong>Data/Hora:</strong> {formatDateTime(response.createdAt)}</p>
+        <p>
+          <strong>Campus:</strong> {response.campus || "-"}
+        </p>
+        <p>
+          <strong>Curso:</strong> {response.course || "-"}
+        </p>
+        <p>
+          <strong>Período:</strong> {response.period || "-"}
+        </p>
+        <p>
+          <strong>Turno:</strong> {response.shift || "-"}
+        </p>
+        <p>
+          <strong>Semestre:</strong> {response.semester || "-"}
+        </p>
+        <p>
+          <strong>Data/Hora:</strong> {formatDateTime(response.createdAt)}
+        </p>
         <p>
           <strong>Recomendaria:</strong>{" "}
           {response.wouldRecommend ? "Sim" : "Não"}

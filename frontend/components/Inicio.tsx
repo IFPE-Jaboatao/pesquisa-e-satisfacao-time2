@@ -83,7 +83,6 @@ export default function FormCard() {
           Sua pesquisa é muito importante para melhorarmos nossos serviços e
           proporcionarmos uma experiência cada vez melhor para todos.
         </p>
-       
       </div>
       <div>
         {activeSurvey && (

@@ -1,12 +1,13 @@
 # Avalia-Plus — Sistema de Pesquisa de Satisfação
 
 ## Descrição
-Este repositório contém o backend do projeto **Avalia-Plus — Sistema de Pesquisa de Satisfação**, desenvolvido utilizando **NestJS**, **TypeORM**, **MySQL** e autenticação com **JWT**.
+Este repositório contém o sistema completo Avalia-Plus, composto por frontend, backend e banco de dados.
 
-A aplicação foi construída seguindo arquitetura modular, promovendo organização, separação de responsabilidades e escalabilidade entre as camadas de controller, service, entity e module, conforme as boas práticas do NestJS.
+O sistema permite a criação, gerenciamento e aplicação de pesquisas de satisfação institucionais, oferecendo uma área pública para resposta dos participantes e um painel administrativo para acompanhamento dos resultados.
+
+A solução foi desenvolvida utilizando Next.js, React, NestJS, TypeORM, MySQL e autenticação JWT. desenvolvido utilizando **Next.js**, **NestJS**, **TypeORM**, **React**, **MySQL**, **TypeORM** e **Autenticação com JWT**.
 
 O sistema tem como objetivo gerenciar pesquisas de satisfação institucionais, permitindo:
-
 - cadastro e gerenciamento de pesquisas;
 - autenticação administrativa;
 - disponibilização de pesquisas públicas;
@@ -21,15 +22,22 @@ O backend foi desenvolvido com base nas jornadas e protótipos definidos no Figm
 ---
 
 ## Tecnologias Utilizadas
-- **Node.js**
-- **TypeScript**
-- **NestJS**
-- **TypeORM**
-- **MySQL**
-- **JWT Authentication**
-- **Swagger**
-- **class-validator**
-- **bcryptjs**
+### Frontend
+- Next.js
+- React
+- TypeScript
+- Tailwind CSS
+- Flowbite
+- Lucide React
+
+### Backend
+- NestJS
+- TypeORM
+- MySQL
+- JWT
+- Swagger
+- Class Validator
+- bcryptjs
 ---
 
 ## Arquitetura
@@ -130,7 +138,26 @@ npm install
 npm run dev
 
 ```
-## Funcionalidades Implementadas até o Momento
+## Endereços da Aplicação
+
+### Frontend Público
+```bash
+http://localhost:3001
+```
+### Login Administrativo
+```bash
+http://localhost:3001/acesso/login
+```
+### Backend API
+```bash
+http://localhost:3000/api
+```
+### Swagger
+```bash
+http://localhost:3000/api/docs
+```
+
+## Funcionalidades Implementadas
 
 ### Módulo Survey
 Responsável pelo gerenciamento das pesquisas de satisfação e controle de disponibilidade para resposta.
@@ -463,40 +490,21 @@ Os testes da API foram realizados manualmente utilizando **Swagger** e **Postman
 - listagem de respostas por pesquisa
 
 ---
-## Etapas do Projeto
 
-### Etapa 1 — Backend Base
-Concluído:
-* configuração do projeto NestJS
-* configuração do MySQL
-* integração com TypeORM
-* configuração de variáveis de ambiente
-* criação do módulo `health`
+### Funcionalidades Concluídas
 
-### Etapa 2 — Fluxo Principal da Pesquisa
-Concluído:
-* módulo `survey`
-* módulo `response`
-* módulo `question`
-* módulo `option`
-* entidades
-* DTOs
-* endpoints principais
-
-### Etapa 3 — Segurança e Documentação
-Concluído:
-* autenticação com JWT
-* controle por perfil (RBAC)
-* Swagger configurado
-* proteção de rotas
-
-### Próximas Etapas
-Planejado:
-* regras de negócio mais completas
-* relatórios
-* collection de testes exportada
-* integração com frontend React + Flowbite
-* deploy da aplicação
+- Backend completo
+- Frontend integrado
+- CRUD de pesquisas
+- Dashboard administrativo
+- Autenticação JWT
+- Swagger
+- Banco de dados MySQL
+- Visualização detalhada de respostas
+- Pesquisa pública
+- Controle de período de resposta
+- Bloqueio de respostas duplicadas
+- Collection Postman
   
 ---
 

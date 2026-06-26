@@ -126,9 +126,7 @@ export default function PesquisasPage() {
                     <td className="p-3">{survey.title}</td>
 
                     <td className="p-3">
-                      <span className={getStatusClass(status)}>
-                        {status}
-                      </span>
+                      <span className={getStatusClass(status)}>{status}</span>
                     </td>
 
                     <td className="p-3">

@@ -136,7 +136,9 @@ export default function RespostasPage() {
                     <div className="flex justify-center gap-3">
                       <button
                         title="Visualizar"
-                        onClick={() => router.push(`/admin/respostas/${response.id}`)}
+                        onClick={() =>
+                          router.push(`/admin/respostas/${response.id}`)
+                        }
                         className="text-blue-600"
                       >
                         <Eye size={18} />

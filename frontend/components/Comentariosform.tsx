@@ -5,6 +5,30 @@ import { useRouter } from "next/navigation";
 import { apiFetch } from "@/lib/api";
 import ProgressBar from "@/components/ProgressBar";
 
+type Question = {
+  id: number;
+  step: number;
+  order: number;
+  title: string;
+};
+
+function getQuestionId(step: number, order: number) {
+  const survey = JSON.parse(localStorage.getItem("survey") || "{}");
+  const questions: Question[] = survey.questions || [];
+
+  const question = questions.find(
+    (item) => item.step === step && item.order === order,
+  );
+
+  if (!question) {
+    throw new Error(
+      `Pergunta não encontrada na etapa ${step}, ordem ${order}.`,
+    );
+  }
+
+  return question.id;
+}
+
 export default function Comentariosform() {
   const router = useRouter();
   const [answers, setAnswers] = useState({
@@ -59,10 +83,12 @@ export default function Comentariosform() {
         finalComment: `${answers.gosta} | ${answers.melhorar} | ${answers.sugestao}`,
         wouldRecommend: answers.recomendaria === "Sim",
         items: [
-          // Infraestrutura
-          { questionId: 29, ratingValue: infraestrutura.qualidade },
           {
-            questionId: 30,
+            questionId: getQuestionId(1, 1),
+            ratingValue: infraestrutura.qualidade,
+          },
+          {
+            questionId: getQuestionId(1, 2),
             selectedOption:
               infraestrutura.laboratorios === "Sim"
                 ? "SIM"
@@ -70,33 +96,53 @@ export default function Comentariosform() {
                   ? "NAO"
                   : "NAO_SE_APLICA",
           },
-          { questionId: 31, ratingValue: infraestrutura.wifi },
-          { questionId: 32, ratingValue: infraestrutura.convivencia },
-          { questionId: 33, ratingValue: infraestrutura.acessibilidade },
-
-          // Segurança
-          { questionId: 34, ratingValue: seguranca.seguranca },
-          { questionId: 35, ratingValue: seguranca.acesso },
-          { questionId: 36, ratingValue: seguranca.iluminacao },
-          { questionId: 37, ratingValue: seguranca.segurancaNoturna },
-
-          // Biblioteca e Atendimento
-          { questionId: 38, ratingValue: bibliotecaAtendimento.acervo },
-          { questionId: 39, ratingValue: bibliotecaAtendimento.espaco },
-          { questionId: 40, ratingValue: bibliotecaAtendimento.secretaria },
-          { questionId: 41, ratingValue: bibliotecaAtendimento.temporesposta },
-
-          // Limpeza
-          { questionId: 42, ratingValue: limpeza.salas },
-          { questionId: 43, ratingValue: limpeza.banheiros },
-          { questionId: 44, textAnswer: limpeza.comentario },
-
-          // Comentários finais
-          { questionId: 45, textAnswer: answers.gosta },
-          { questionId: 46, textAnswer: answers.melhorar },
-          { questionId: 47, textAnswer: answers.sugestao },
+          { questionId: getQuestionId(1, 3), ratingValue: infraestrutura.wifi },
           {
-            questionId: 48,
+            questionId: getQuestionId(1, 4),
+            ratingValue: infraestrutura.convivencia,
+          },
+          {
+            questionId: getQuestionId(1, 5),
+            ratingValue: infraestrutura.acessibilidade,
+          },
+
+          { questionId: getQuestionId(2, 1), ratingValue: seguranca.seguranca },
+          { questionId: getQuestionId(2, 2), ratingValue: seguranca.acesso },
+          {
+            questionId: getQuestionId(2, 3),
+            ratingValue: seguranca.iluminacao,
+          },
+          {
+            questionId: getQuestionId(2, 4),
+            ratingValue: seguranca.segurancaNoturna,
+          },
+
+          {
+            questionId: getQuestionId(3, 1),
+            ratingValue: bibliotecaAtendimento.acervo,
+          },
+          {
+            questionId: getQuestionId(3, 2),
+            ratingValue: bibliotecaAtendimento.espaco,
+          },
+          {
+            questionId: getQuestionId(3, 3),
+            ratingValue: bibliotecaAtendimento.secretaria,
+          },
+          {
+            questionId: getQuestionId(3, 4),
+            ratingValue: bibliotecaAtendimento.temporesposta,
+          },
+
+          { questionId: getQuestionId(4, 1), ratingValue: limpeza.salas },
+          { questionId: getQuestionId(4, 2), ratingValue: limpeza.banheiros },
+          { questionId: getQuestionId(4, 3), textAnswer: limpeza.comentario },
+
+          { questionId: getQuestionId(5, 1), textAnswer: answers.gosta },
+          { questionId: getQuestionId(5, 2), textAnswer: answers.melhorar },
+          { questionId: getQuestionId(5, 3), textAnswer: answers.sugestao },
+          {
+            questionId: getQuestionId(5, 4),
             selectedOption:
               answers.recomendaria === "Sim"
                 ? "SIM"

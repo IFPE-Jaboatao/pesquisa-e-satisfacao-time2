@@ -49,9 +49,13 @@ export default function DashboardPage() {
   }, []);
 
   const totalSurveys = surveys.length;
-  const activeSurveys = surveys.filter((survey) => getSurveyStatus(survey) === "Ativa").length;
+  const activeSurveys = surveys.filter(
+    (survey) => getSurveyStatus(survey) === "Ativa",
+  ).length;
   const totalResponses = responses.length;
-  const responsesToday = responses.filter((response) => isToday(response.createdAt)).length;
+  const responsesToday = responses.filter((response) =>
+    isToday(response.createdAt),
+  ).length;
 
   const recentSurveys = surveys.slice(0, 5);
   const recentResponses = responses.slice(0, 5);
@@ -62,9 +66,7 @@ export default function DashboardPage() {
 
   return (
     <div>
-      <h2 className="text-xl font-bold text-[#111827] mb-1">
-        Dashboard
-      </h2>
+      <h2 className="text-xl font-bold text-[#111827] mb-1">Dashboard</h2>
 
       <p className="text-sm text-gray-600 mb-6">
         Resumo geral das pesquisas e respostas do sistema.
@@ -79,9 +81,7 @@ export default function DashboardPage() {
 
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
         <section className="bg-white border border-[#9BDDE5] rounded-xl shadow p-4">
-          <h3 className="font-bold text-[#111827] mb-3">
-            Pesquisas recentes
-          </h3>
+          <h3 className="font-bold text-[#111827] mb-3">Pesquisas recentes</h3>
 
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
@@ -106,9 +106,7 @@ export default function DashboardPage() {
         </section>
 
         <section className="bg-white border border-[#9BDDE5] rounded-xl shadow p-4">
-          <h3 className="font-bold text-[#111827] mb-3">
-            Respostas recentes
-          </h3>
+          <h3 className="font-bold text-[#111827] mb-3">Respostas recentes</h3>
 
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
@@ -122,11 +120,11 @@ export default function DashboardPage() {
               <tbody>
                 {recentResponses.map((response) => (
                   <tr key={response.id} className="border-t">
-                    <td className="p-2">
-                      {response.survey?.title || "-"}
-                    </td>
+                    <td className="p-2">{response.survey?.title || "-"}</td>
                     <td className="p-2">{response.course || "-"}</td>
-                    <td className="p-2">{formatDateTime(response.createdAt)}</td>
+                    <td className="p-2">
+                      {formatDateTime(response.createdAt)}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -172,7 +170,9 @@ function isToday(date: string) {
   const inputDate = new Date(date);
   const today = new Date();
 
-  return inputDate.toLocaleDateString("pt-BR") === today.toLocaleDateString("pt-BR");
+  return (
+    inputDate.toLocaleDateString("pt-BR") === today.toLocaleDateString("pt-BR")
+  );
 }
 
 function formatDate(date: string) {

@@ -30,32 +30,40 @@ export default function LoginAcessoPage() {
 
   return (
     <main className="min-h-screen grid grid-cols-1 md:grid-cols-2 bg-[#EAF7FA]">
-      <section className="hidden md:flex flex-col items-center justify-center p-10">
+      <section className="flex flex-col items-center justify-center p-6 md:p-10">
         <Image
           src="/imagens/logo-icon.png"
           alt="Avalia Plus"
-          width={90}
-          height={90}
+          width={80}
+          height={80}
         />
 
-        <h1 className="text-3xl font-bold text-[#111827] mt-4">Avalia-Plus</h1>
+        <h1 className="text-2xl md:text-3xl font-bold text-[#111827] mt-4">
+          Avalia-Plus
+        </h1>
 
-        <p className="text-gray-600 mb-10">Sistema de Pesquisa de Satisfação</p>
-
-        <Image
-          src="/imagens/tela-login.png"
-          alt="Imagem Login"
-          width={500}
-          height={500}
-        />
-
-        <p className="text-center font-semibold text-[#111827]">
-          Gerencie pesquisas, usuários e respostas
+        <p className="text-gray-600 mb-6 text-center">
+          Sistema de Pesquisa de Satisfação
         </p>
 
-        <p className="text-center text-sm text-gray-600 mt-2">
-          Tudo que você precisa para acompanhar a pesquisa.
-        </p>
+        <div className="hidden md:block">
+          <div className="hidden md:block">
+            <Image
+              src="/imagens/tela-login.png"
+              alt="Imagem Login"
+              width={500}
+              height={500}
+            />
+
+            <p className="text-center font-semibold text-[#111827]">
+              Gerencie pesquisas, usuários e respostas
+            </p>
+
+            <p className="text-center text-sm text-gray-600 mt-2">
+              Tudo que você precisa para acompanhar a pesquisa.
+            </p>
+          </div>
+        </div>
       </section>
 
       <section className="flex items-center justify-center bg-white p-6">

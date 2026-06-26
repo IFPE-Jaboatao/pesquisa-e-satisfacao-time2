@@ -59,10 +59,12 @@ export default function CriarPesquisaPage() {
     try {
       setLoading(true);
 
-      await apiFetch("/surveys", {
+      const survey = await apiFetch("/surveys", {
         method: "POST",
         body: JSON.stringify(form),
       });
+
+      await createDefaultQuestions(survey.id);
 
       alert("Pesquisa criada com sucesso!");
       router.push("/admin/pesquisas");
@@ -170,4 +172,167 @@ export default function CriarPesquisaPage() {
       </form>
     </div>
   );
+}
+
+type DefaultQuestion = {
+  title: string;
+  type: "RATING" | "SINGLE_CHOICE" | "TEXT";
+  category: string;
+  step: number;
+  order: number;
+};
+
+async function createDefaultQuestions(surveyId: number) {
+  const questions: DefaultQuestion[] = [
+    {
+      title: "Qualidade das salas de aula, laboratórios e equipamentos",
+      type: "RATING",
+      category: "Infraestrutura",
+      step: 1,
+      order: 1,
+    },
+    {
+      title: "Os laboratórios estão bem equipados e seguros?",
+      type: "SINGLE_CHOICE",
+      category: "Infraestrutura",
+      step: 1,
+      order: 2,
+    },
+    {
+      title: "Qualidade do Wi-Fi",
+      type: "RATING",
+      category: "Infraestrutura",
+      step: 1,
+      order: 3,
+    },
+    {
+      title: "Áreas de convivência",
+      type: "RATING",
+      category: "Infraestrutura",
+      step: 1,
+      order: 4,
+    },
+    {
+      title: "Acessibilidade",
+      type: "RATING",
+      category: "Infraestrutura",
+      step: 1,
+      order: 5,
+    },
+    {
+      title: "Segurança no campus",
+      type: "RATING",
+      category: "Segurança",
+      step: 2,
+      order: 1,
+    },
+    {
+      title: "Controle de acesso",
+      type: "RATING",
+      category: "Segurança",
+      step: 2,
+      order: 2,
+    },
+    {
+      title: "Iluminação externa",
+      type: "RATING",
+      category: "Segurança",
+      step: 2,
+      order: 3,
+    },
+    {
+      title: "Segurança no período noturno",
+      type: "RATING",
+      category: "Segurança",
+      step: 2,
+      order: 4,
+    },
+    {
+      title: "Acervo disponível",
+      type: "RATING",
+      category: "Biblioteca e Atendimento",
+      step: 3,
+      order: 1,
+    },
+    {
+      title: "Espaço para estudo",
+      type: "RATING",
+      category: "Biblioteca e Atendimento",
+      step: 3,
+      order: 2,
+    },
+    {
+      title: "Secretaria acadêmica",
+      type: "RATING",
+      category: "Biblioteca e Atendimento",
+      step: 3,
+      order: 3,
+    },
+    {
+      title: "Tempo de resposta",
+      type: "RATING",
+      category: "Biblioteca e Atendimento",
+      step: 3,
+      order: 4,
+    },
+    {
+      title: "Limpeza das salas",
+      type: "RATING",
+      category: "Limpeza",
+      step: 4,
+      order: 1,
+    },
+    {
+      title: "Limpeza dos banheiros",
+      type: "RATING",
+      category: "Limpeza",
+      step: 4,
+      order: 2,
+    },
+    {
+      title: "Comentário sobre limpeza",
+      type: "TEXT",
+      category: "Limpeza",
+      step: 4,
+      order: 3,
+    },
+    {
+      title: "O que você mais gosta na universidade?",
+      type: "TEXT",
+      category: "Comentários",
+      step: 5,
+      order: 1,
+    },
+    {
+      title: "O que precisa ser melhorado?",
+      type: "TEXT",
+      category: "Comentários",
+      step: 5,
+      order: 2,
+    },
+    {
+      title: "Sugestão adicional",
+      type: "TEXT",
+      category: "Comentários",
+      step: 5,
+      order: 3,
+    },
+    {
+      title: "Você recomendaria a instituição?",
+      type: "SINGLE_CHOICE",
+      category: "Comentários",
+      step: 5,
+      order: 4,
+    },
+  ];
+
+  for (const question of questions) {
+    await apiFetch("/questions", {
+      method: "POST",
+      body: JSON.stringify({
+        ...question,
+        surveyId,
+      }),
+    });
+  }
 }

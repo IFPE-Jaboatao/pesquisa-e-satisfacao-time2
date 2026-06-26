@@ -43,8 +43,8 @@ export default function CadastroAcessoPage() {
   }
 
   return (
-    <main className="min-h-screen grid grid-cols-1 md:grid-cols-2 bg-[#EAF7FA]">
-      <section className="hidden md:flex flex-col items-center justify-center p-10">
+    <main className="min-h-screen flex flex-col md:grid md:grid-cols-2 bg-[#EAF7FA]">
+      <section className="flex flex-col items-center justify-center p-6 md:p-10">
         <Image
           src="/imagens/logo-icon.png"
           alt="Avalia Plus"
@@ -72,8 +72,8 @@ export default function CadastroAcessoPage() {
         </p>
       </section>
 
-      <section className="flex items-center justify-center bg-white p-6">
-        <div className="w-full max-w-md">
+      <section className="flex items-center justify-center bg-white p-6 md:p-10">
+        <div className="w-full max-w-md md:max-w-lg">
           <h2 className="text-2xl font-bold text-[#111827] mb-2">
             Criar conta do administrador
           </h2>

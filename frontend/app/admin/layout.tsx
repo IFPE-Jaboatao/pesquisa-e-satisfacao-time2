@@ -68,7 +68,6 @@ export default function AdminLayout({
           >
             Respostas
           </button>
-
         </nav>
 
         <button onClick={logout} className="mt-4 lg:mt-auto text-left">
